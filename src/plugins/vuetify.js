@@ -12,13 +12,15 @@ export default new Vuetify({
                 primary: '#4285F4',
                 success: '#0F9D58',
                 error: '#DB4437',
-                textColor: '#757575',
+                ct: '#757575',
+                
             },
             dark: {
                 primary: '#4285F4',
                 success: '#0F9D58',
                 error: '#DB4437',
-                textColor: '#F5F5F5',
+                ct: '#F5F5F5',
+                
             },
         },
     },
