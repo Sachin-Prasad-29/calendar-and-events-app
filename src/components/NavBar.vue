@@ -89,13 +89,15 @@
                     </template>
                     <v-list>
                         <v-list-item>
-                            <v-list-item-title><EventForm /></v-list-item-title>
+                            <v-list-item-title><EventForm icon="mdi-calendar-edit" name="Event" /></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><TaskForm /></v-list-item-title>
+                            <v-list-item-title
+                                ><TaskForm icon="mdi-checkbox-marked-circle-outline" name="Task"
+                            /></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><ReminderForm /></v-list-item-title>
+                            <v-list-item-title><ReminderForm icon="mdi-reminder" name="Reminder" /></v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -149,28 +151,48 @@
                     color="purple "
                 ></v-checkbox>
             </div>
+        </v-navigation-drawer>
 
-            </v-navigation-drawer>
-
-        <v-speed-dial v-model="fab" bottom="true" right="true" direction="top" transition="slide-y-reverse-transition">
+        <v-speed-dial
+            v-model="fab"
+            :bottom="true"
+            :right="true"
+            direction="top"
+            transition="slide-y-reverse-transition"
+        >
             <template v-slot:activator>
-                <v-btn v-model="fab" color="blue darken-2" dark fab>
+                <v-btn v-model="fab" color="red darken-2" dark fab>
                     <v-icon v-if="fab"> mdi-close </v-icon>
                     <v-icon v-else> mdi-plus</v-icon>
                 </v-btn>
             </template>
 
-            <v-btn fab dark small color="green">
-                <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn fab dark small color="indigo">
-                <v-icon>mdi-plus</v-icon>
-            </v-btn>
-            <v-btn fab dark small color="red">
-                <v-icon>mdi-delete</v-icon>
-            </v-btn>
-            <v-switch v-model="$vuetify.theme.dark" inset color="black" right class="ma-5"></v-switch
-        >
+            <v-tooltip left color="orange">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn fab dark small color="orange" v-bind="attrs" v-on="on">
+                        <ReminderForm icon="mdi-reminder" />
+                    </v-btn>
+                </template>
+                <span>Add Reminder</span>
+            </v-tooltip>
+            <v-tooltip left color="success">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn fab dark small color="success" v-bind="attrs" v-on="on">
+                        <TaskForm icon="mdi-checkbox-marked-circle-outline" />
+                    </v-btn>
+                </template>
+                <span>Add Task</span>
+            </v-tooltip>
+            <v-tooltip left color="primary">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn fab dark small color="primary" v-bind="attrs" v-on="on">
+                        <EventForm icon="mdi-calendar-edit" />
+                    </v-btn>
+                </template>
+                <span>Add Event</span>
+            </v-tooltip>
+
+            <v-switch v-model="$vuetify.theme.dark" inset color="black" right class="ma-5"></v-switch>
         </v-speed-dial>
     </div>
 </template>
@@ -209,20 +231,7 @@ export default {
             tabs: null,
         };
     },
-    watch: {
-        top(val) {
-            this.bottom = !val;
-        },
-        right(val) {
-            this.left = !val;
-        },
-        bottom(val) {
-            this.top = !val;
-        },
-        left(val) {
-            this.right = !val;
-        },
-    },
+
     computed: {
         menuIcon() {
             if (!this.drawer) return 'mdi-menu';

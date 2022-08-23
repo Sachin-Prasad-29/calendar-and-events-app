@@ -3,13 +3,13 @@
         <v-dialog v-model="dialog" max-width="700px" class="ma-0" transition="dialog-bottom-transition">
             <template v-slot:activator="{ on, attrs }">
                 <div text v-bind="attrs" v-on="on">
-                    <v-icon left>mdi-reminder</v-icon>
-                    <span right>Reminder</span>
+                    <v-icon class="ml-2">{{ icon }}</v-icon>
+                    <span class="ml-2">{{ name }}</span>
                 </div>
             </template>
             <v-card class="ma-0">
                 <v-card-actions fixed class="justify-space-between mx-0 my-0">
-                    <v-card-title class="text-h4">Add a Reminder</v-card-title>
+                    <v-card-title class="text-h4">Reminder</v-card-title>
                     <v-btn text large fab @click="dialog = false" class="red--text">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
@@ -94,6 +94,7 @@
 <script>
 export default {
     name: 'ReminderForm',
+    props: ['icon', 'name'],
     data() {
         return {
             menu1: false,

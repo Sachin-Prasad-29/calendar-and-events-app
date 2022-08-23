@@ -1,15 +1,15 @@
 <template>
-<div class="event">
-        <v-dialog v-model="dialog" max-width="700px" class="ma-0" transition="dialog-bottom-transition" >
+    <div class="event">
+        <v-dialog v-model="dialog" max-width="700px" class="ma-0" transition="dialog-bottom-transition">
             <template v-slot:activator="{ on, attrs }">
                 <div text v-bind="attrs" v-on="on">
-                    <v-icon left>mdi-checkbox-marked-circle-outline</v-icon>
-                    <span right>Task</span>
+                    <v-icon class="ml-2">{{ icon }}</v-icon>
+                    <span class="ml-2">{{ name }}</span>
                 </div>
             </template>
             <v-card class="ma-0">
                 <v-card-actions fixed class="justify-space-between mx-0 my-0">
-                    <v-card-title class="text-h4">Add a new Task </v-card-title>
+                    <v-card-title class="text-h4">Task </v-card-title>
                     <v-btn text large fab @click="dialog = false" class="red--text">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
@@ -19,7 +19,12 @@
                         <v-container>
                             <v-row no-gutters>
                                 <v-col cols="12">
-                                    <v-text-field v-model="title" label="Title" :rules="titleRule" placeholder="Name of Task..."></v-text-field>
+                                    <v-text-field
+                                        v-model="title"
+                                        label="Title"
+                                        :rules="titleRule"
+                                        placeholder="Name of Task..."
+                                    ></v-text-field>
                                 </v-col>
 
                                 <v-col cols="6" sm="3" md="3">
@@ -45,10 +50,8 @@
                                         <v-date-picker v-model="startDate" @input="menu1 = false"></v-date-picker>
                                     </v-menu>
                                 </v-col>
-                                <v-col cols="1" sm="1" md="1">
-                                    
-                                </v-col>
-                                <v-col cols="5" sm="3" md="3" >
+                                <v-col cols="1" sm="1" md="1"> </v-col>
+                                <v-col cols="5" sm="3" md="3">
                                     <v-text-field
                                         v-model="startTime"
                                         type="time"
@@ -57,9 +60,6 @@
                                     ></v-text-field>
                                 </v-col>
 
-                                
-
-                                
                                 <v-col cols="6" sm="6" md="6" xs="6">
                                     <v-switch v-model="notification" inset label="Add notification"></v-switch>
                                 </v-col>
@@ -72,7 +72,7 @@
                                     >
                                     </v-text-field>
                                 </v-col>
-                                <v-col cols="12" >
+                                <v-col cols="12">
                                     <v-text-field
                                         v-model="location"
                                         label="Location"
@@ -113,6 +113,7 @@
 <script>
 export default {
     name: 'TaskForm',
+     props:['icon','name'],
     data() {
         return {
             menu1: false,
@@ -127,7 +128,7 @@ export default {
             endDate: '',
             startTime: '',
             endTime: '',
-            category:'task',
+            category: 'task',
             attendee: [],
             notification: false,
             notifyBefore: 15,
