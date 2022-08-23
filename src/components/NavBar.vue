@@ -150,8 +150,28 @@
                 ></v-checkbox>
             </div>
 
+            </v-navigation-drawer>
+
+        <v-speed-dial v-model="fab" bottom="true" right="true" direction="top" transition="slide-y-reverse-transition">
+            <template v-slot:activator>
+                <v-btn v-model="fab" color="blue darken-2" dark fab>
+                    <v-icon v-if="fab"> mdi-close </v-icon>
+                    <v-icon v-else> mdi-plus</v-icon>
+                </v-btn>
+            </template>
+
+            <v-btn fab dark small color="green">
+                <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+            <v-btn fab dark small color="indigo">
+                <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <v-btn fab dark small color="red">
+                <v-icon>mdi-delete</v-icon>
+            </v-btn>
             <v-switch v-model="$vuetify.theme.dark" inset color="black" right class="ma-5"></v-switch
-        ></v-navigation-drawer>
+        >
+        </v-speed-dial>
     </div>
 </template>
 
@@ -183,7 +203,25 @@ export default {
                 email: 'skpkorba9009@gmail.com',
                 profile: '/avator-1.jpg',
             },
+            fab: false,
+            fling: false,
+
+            tabs: null,
         };
+    },
+    watch: {
+        top(val) {
+            this.bottom = !val;
+        },
+        right(val) {
+            this.left = !val;
+        },
+        bottom(val) {
+            this.top = !val;
+        },
+        left(val) {
+            this.right = !val;
+        },
     },
     computed: {
         menuIcon() {
@@ -208,5 +246,13 @@ export default {
     border: 1px solid black;
     padding: 5px 7px;
     border-radius: 50%;
+}
+
+.v-speed-dial {
+    position: absolute;
+}
+
+.v-btn--floating {
+    position: relative;
 }
 </style>
