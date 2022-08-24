@@ -50,8 +50,8 @@
                                 <div class="caption subheading mt-1">{{ user.email }}</div>
                                 <div class="mt-3">
                                     <v-btn color="primary " text outlined rounded router to="/profile">
-                                        <v-icon> mdi-pencil-circle-outline</v-icon>
-                                        <span class="text-capitalize ml-2"> edit profile </span>
+                                        <v-icon> mdi-emoticon-happy-outline</v-icon>
+                                        <span class="text-capitalize ml-2"> view profile </span>
                                     </v-btn>
                                 </div>
 
@@ -191,8 +191,24 @@
                 </template>
                 <span>Add Event</span>
             </v-tooltip>
+            <v-tooltip left color="grey darken-1">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        fab
+                        dark
+                        small
+                        v-model="$vuetify.theme.dark"
+                        @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+                        color="grey"
+                        v-bind="attrs"
+                        v-on="on"
 
-            <v-switch v-model="$vuetify.theme.dark" inset color="black" right class="ma-5"></v-switch>
+                    >
+                        <v-icon color="white">mdi-invert-colors</v-icon>
+                    </v-btn>
+                </template>
+                <span>{{ $vuetify.theme.dark ? 'Light':'Dark'}} theme</span>
+            </v-tooltip>
         </v-speed-dial>
     </div>
 </template>
@@ -218,7 +234,7 @@ export default {
 
             links: [
                 { icon: 'calendar-month-outline', text: 'Calendar', route: '/calendar' },
-                { icon: 'clipboard-check-outline', text: 'View', route: '/event' },
+                { icon: 'clipboard-check-outline', text: 'All Events', route: '/event' },
             ],
             user: {
                 name: 'Sachin Prasad',
@@ -237,6 +253,7 @@ export default {
             if (!this.drawer) return 'mdi-menu';
             return 'mdi-close';
         },
+        
     },
     created() {},
     methods: {
@@ -258,7 +275,7 @@ export default {
 }
 
 .v-speed-dial {
-    position: absolute;
+    position: fixed;
 }
 
 .v-btn--floating {

@@ -4,13 +4,19 @@ import AccountPage from '@/views/AccountPage';
 import CalendarPage from '@/views/CalendarPage';
 import ProfilePage from '@/views/ProfilePage';
 import EventPage from '@/views/EventPage';
+import LandingPage from '@/views/LandingPage';
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/account',
-        name: 'account',
+        path: '/',
+        name: 'landing',
+        component: LandingPage,
+    },
+    {
+        path: '/auth',
+        name: 'auth',
         component: AccountPage,
     },
     {

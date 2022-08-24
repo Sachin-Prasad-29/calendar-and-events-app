@@ -1,6 +1,6 @@
 <template>
     <div class="event">
-        <v-dialog v-model="dialog" max-width="320px" class="ma-0" transition="dialog-bottom-transition">
+        <v-dialog v-model="dialog" max-width="350px" class="ma-0" transition="dialog-bottom-transition">
             <template v-slot:activator="{ on, attrs }">
                 <div text v-bind="attrs" v-on="on">
                     <v-icon small>mdi-camera</v-icon>
@@ -28,12 +28,12 @@
                                 </v-col>
 
                                 <v-col cols="12" class="mt-3">
-                                    <v-avatar size="150">
+                                    <v-avatar size="200">
                                         <img :src="user.profile" alt="" />
                                     </v-avatar>
                                 </v-col>
 
-                                <v-col cols="12" class="my-3">
+                                <v-col cols="12" class="my-4">
                                     <hr class="ma-5 grey" />
                                     <v-btn rounded text outlined color="primary" class="mr-1">
                                         <v-icon>mdi-pencil-circle</v-icon>

@@ -30,12 +30,11 @@
                             ></v-text-field>
 
                             <v-btn
-                            
                                 rounded
                                 elevation="0"
                                 class="success px-8 py-5"
                                 :disabled="!signinValid"
-                                @click="validate1"
+                                @click="onLogin"
                                 >Sign in</v-btn
                             >
 
@@ -52,7 +51,6 @@
                                 type="text"
                                 label="Username"
                                 prepend-inner-icon="mdi-at"
-                                
                                 class="mb-2 input-width"
                                 :rules="nameRules"
                             ></v-text-field>
@@ -92,7 +90,7 @@
                                 elevation="0"
                                 class="success px-8 py-5"
                                 :disabled="!signupValid"
-                                @click="validate2"
+                                @click="onRegister"
                                 >Sign in</v-btn
                             >
                         </div>
@@ -123,6 +121,8 @@
 </template>
 
 <script>
+import { login, register } from '@/services/auth';
+
 export default {
     name: 'AccountPage',
     data() {
@@ -160,24 +160,31 @@ export default {
         },
     },
     methods: {
-        validate1() {
+        async onLogin() {
             if (this.$refs.form1.validate()) {
-                const data = {
+                const userDetails = {
                     email: this.signinEmail,
                     password: this.signinPassword,
                 };
-                console.log(data);
+
+                const response = await login(userDetails);
+                console.log(response);
+                this.signinEmail = this.signinPassword = '';
+                localStorage.setItem('token', response.token);
+
                 this.$router.push('/calendar');
             }
         },
-        validate2() {
+        async onRegister() {
             if (this.$refs.form2.validate()) {
-                const data = {
+                const userDetails = {
                     email: this.signupEmail,
                     password: this.signupPassword,
                     name: this.name,
                 };
-                console.log(data);
+                const response = await register(userDetails);
+                console.log(response);
+                this.signupEmail = this.signupPassword = this.name = '';
                 this.login = true;
             }
         },
