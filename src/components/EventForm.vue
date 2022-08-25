@@ -1,10 +1,10 @@
 <template>
     <div class="event">
-        <v-dialog v-model="dialog" max-width="700px" class="ma-0"  transition="dialog-bottom-transition" >
+        <v-dialog v-model="dialog" max-width="700px" class="ma-0" transition="dialog-bottom-transition">
             <template v-slot:activator="{ on, attrs }">
                 <div text v-bind="attrs" v-on="on">
-                    <v-icon class='ml-2'>{{icon}}</v-icon>
-                    <span class="ml-2">{{name}}</span>
+                    <v-icon class="ml-2">{{ icon }}</v-icon>
+                    <span class="ml-2">{{ name }}</span>
                 </div>
             </template>
             <v-card class="ma-0">
@@ -19,7 +19,12 @@
                         <v-container>
                             <v-row no-gutters>
                                 <v-col cols="12">
-                                    <v-text-field v-model="title" label="Title" :rules="titleRule" placeholder="Name of Event"></v-text-field>
+                                    <v-text-field
+                                        v-model="title"
+                                        label="Title"
+                                        :rules="titleRule"
+                                        placeholder="Name of Event"
+                                    ></v-text-field>
                                 </v-col>
 
                                 <v-col cols="6" sm="6" md="3" xs="6">
@@ -122,7 +127,7 @@
                                                 <v-list-item-content>
                                                     <v-list-item-title v-html="data.item.name"></v-list-item-title>
                                                     <v-list-item-subtitle
-                                                        v-html="data.item.group"
+                                                        v-html="data.item.email"
                                                     ></v-list-item-subtitle>
                                                 </v-list-item-content>
                                             </template>
@@ -180,24 +185,23 @@
 </template>
 
 <script>
+import { addEvent } from '@/services/addEvents';
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'EventForm',
-    props:['icon','name'],
+    props: ['icon', 'name'],
     data() {
         return {
             menu1: false,
             menu2: false,
             dialog: false,
-            people: [
-                { name: 'Sandra Adams', group: 'Group 1' },
-                { name: 'Aman Adams', group: 'Group 1' },
-            ],
             title: '',
             startDate: '',
             endDate: '',
             startTime: '',
             endTime: '',
-            category:'event',
+
             attendee: [],
             notification: false,
             notifyBefore: 15,
@@ -213,22 +217,46 @@ export default {
             endTimeRule: [(v) => !!v || 'End Time is required'],
         };
     },
+    computed: {
+        ...mapGetters(['allUsers']),
+        people() {
+            return this.allUsers;
+        },
+    },
     methods: {
-        submit() {
+        async submit() {
+            console.log(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
             if (this.$refs.form.validate()) {
+                console.log(new Date());
+
                 const eventDetails = {
                     title: this.title,
                     startDate: this.startDate,
                     endDate: this.endDate,
-                    startTime: this.startTime,
-                    endTime: this.endTime,
+                    startTime: {
+                        hours: parseInt(this.startTime.substring(0, 2)),
+                        minutes: parseInt(this.startTime.substring(3, 5)),
+                    },
+                    endTime: {
+                        hours: parseInt(this.endTime.substring(0, 2)),
+                        minutes: parseInt(this.endTime.substring(3, 5)),
+                    },
+                    createdOn: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                    category: 'event',
                     attendee: this.attendee,
                     notification: this.notification,
                     notifyBefore: this.notifyBefore,
                     location: this.location,
                     description: this.description,
                 };
-                console.log(eventDetails);
+
+                const response = await addEvent(eventDetails);
+
+                if (response.success) {
+                    console.log(response);
+                } else {
+                    alert('Some Error Happended');
+                }
             }
         },
         reset() {

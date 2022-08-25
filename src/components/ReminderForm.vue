@@ -92,22 +92,18 @@
 </template>
 
 <script>
+import { addEvent } from '@/services/addEvents';
 export default {
     name: 'ReminderForm',
     props: ['icon', 'name'],
     data() {
         return {
             menu1: false,
-            menu2: false,
             dialog: false,
-            people: [
-                { name: 'Sandra Adams', group: 'Group 1' },
-                { name: 'Aman Adams', group: 'Group 1' },
-            ],
+
             title: '',
             startDate: '',
             startTime: '',
-            category: 'reminder',
             notification: true,
             notifyBefore: 15,
             titleRule: [
@@ -116,22 +112,35 @@ export default {
             ],
             startDateRule: [(v) => !!v || 'Start Date is required'],
             startTimeRule: [(v) => !!v || 'Start Time is required'],
-            endDateRule: [(v) => !!v || 'End Date is required'],
-            endTimeRule: [(v) => !!v || 'End Time is required'],
         };
     },
     methods: {
-        submit() {
+        async submit() {
+            console.log(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
             if (this.$refs.form.validate()) {
+                console.log(new Date());
+
                 const eventDetails = {
                     title: this.title,
                     startDate: this.startDate,
-                    startTime: this.startTime,
+                    endDate: this.endDate,
+                    startTime: {
+                        hours: parseInt(this.startTime.substring(0, 2)),
+                        minutes: parseInt(this.startTime.substring(3, 5)),
+                    },
+                    createdOn: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
+                    category: 'reminder',
                     notification: this.notification,
                     notifyBefore: this.notifyBefore,
                 };
-                console.log(eventDetails);
+                const response = await addEvent(eventDetails);
+                if (response.success) {
+                    console.log(response);
+                } else {
+                    alert('Some Error Happended');
+                }
             }
+            console.log('hello')
         },
         reset() {
             this.$refs.form.reset();

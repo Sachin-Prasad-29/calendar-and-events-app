@@ -81,6 +81,7 @@
                             <v-icon> mdi-gender-male-female </v-icon>
                             <span class="font-weight-bold ml-2">Gender : </span>{{ user.gender }}
                         </div>
+                         
                         <v-text-field
                             rounded
                             v-show="edit"
@@ -89,6 +90,7 @@
                             label="Gender"
                             v-model="user.gender"
                         ></v-text-field>
+                        
                         <v-text-field
                             rounded
                             v-show="edit"
@@ -118,11 +120,14 @@
                     </v-col>
                 </v-row>
                 <v-row>
+                   
                     <v-col cols="12 " class="text-center mb-4">
+                         
                         <v-btn rounded color="success  white--text" class=" px-5 mr-2 text-capitalize" v-show="edit" @click="submit">
                             <v-icon>mdi-content-save</v-icon>
                            <span class="ml-2 "> Save </span> 
                         </v-btn>
+                        
                         <v-btn rounded color="orange white--text" class="text-capitalize" v-show="edit">
                             <v-icon> mdi-refresh-circle </v-icon>
                             <span class="ml-1"> Reset </span> 
@@ -142,7 +147,9 @@
                             <span class="ml-1 text-capitalize">Edit Profile </span>
                         </v-btn>
                     </v-col>
+                    
                 </v-row>
+                <v-btn><EventForm/></v-btn>
             </v-card>
         </v-container>
     </div>
@@ -151,12 +158,13 @@
 <script>
 import NavBar from '@/components/NavBar.vue';
 import ChangeProfile from '@/components/ChangeProfile.vue';
+import EventForm from '@/components/EventForm.vue'
 export default {
     name: 'ProfilePage',
-    components: { NavBar, ChangeProfile },
+    components: { NavBar, ChangeProfile, EventForm },
     data() {
         return {
-            edit: true,
+            edit: false,
             user: {
                 name: 'Sachin',
                 email: 'skpkorba@gmail.com',
@@ -196,5 +204,23 @@ export default {
 }
 .peronal-info {
     padding: 8px;
+}
+
+.bounce-enter-active {
+    animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+    animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 </style>

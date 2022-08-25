@@ -123,6 +123,7 @@
 <script>
 import { login, register } from '@/services/auth';
 
+
 export default {
     name: 'AccountPage',
     data() {
@@ -160,6 +161,7 @@ export default {
         },
     },
     methods: {
+        
         async onLogin() {
             if (this.$refs.form1.validate()) {
                 const userDetails = {
@@ -171,7 +173,7 @@ export default {
                 console.log(response);
                 this.signinEmail = this.signinPassword = '';
                 localStorage.setItem('token', response.token);
-
+                
                 this.$router.push('/calendar');
             }
         },

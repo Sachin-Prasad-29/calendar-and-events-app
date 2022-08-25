@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-app-bar flat outlined color="">
+        <v-app-bar dense flat outlined color="">
             <v-app-bar-nav-icon @click="menu" left>
                 <v-icon> {{ menuIcon }}</v-icon>
             </v-app-bar-nav-icon>
@@ -102,20 +102,7 @@
                     </v-list>
                 </v-menu>
             </v-layout>
-            <!-- <v-layout column align-center>
-                <v-btn
-                    rounded
-                    small
-                    outlined
-                    slot="activator"
-                    class="success--text text-capitalize mb-3"
-                    v-bind="attrs"
-                    v-on="on"
-                >
-                    <v-icon left small>mdi-pencil-circle</v-icon>
-                    Edit profile
-                </v-btn>
-            </v-layout> -->
+
             <v-list>
                 <v-list-item-group active-class="">
                     <v-list-item v-for="link in links" :key="link.text" router :to="link.route">
@@ -152,64 +139,92 @@
                 ></v-checkbox>
             </div>
         </v-navigation-drawer>
-
-        <v-speed-dial
-            v-model="fab"
-            :bottom="true"
-            :right="true"
-            direction="top"
-            transition="slide-y-reverse-transition"
-        >
-            <template v-slot:activator>
-                <v-btn v-model="fab" color="red darken-2" dark fab>
-                    <v-icon v-if="fab"> mdi-close </v-icon>
-                    <v-icon v-else> mdi-plus</v-icon>
-                </v-btn>
-            </template>
-
-            <v-tooltip left color="orange">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn fab dark small color="orange" v-bind="attrs" v-on="on">
-                        <ReminderForm icon="mdi-reminder" />
-                    </v-btn>
-                </template>
-                <span>Add Reminder</span>
-            </v-tooltip>
-            <v-tooltip left color="success">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn fab dark small color="success" v-bind="attrs" v-on="on">
-                        <TaskForm icon="mdi-checkbox-marked-circle-outline" />
-                    </v-btn>
-                </template>
-                <span>Add Task</span>
-            </v-tooltip>
-            <v-tooltip left color="primary">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn fab dark small color="primary" v-bind="attrs" v-on="on">
-                        <EventForm icon="mdi-calendar-edit" />
-                    </v-btn>
-                </template>
-                <span>Add Event</span>
-            </v-tooltip>
-            <v-tooltip left color="grey darken-1">
-                <template v-slot:activator="{ on, attrs }">
+        <v-tooltip left color="grey">
+            <template v-slot:activator="{ on, attrs }">
+                <transition name="bounce">
                     <v-btn
-                        fab
+                        color="grey darken-4"
                         dark
+                        fab
                         small
-                        v-model="$vuetify.theme.dark"
+                        elevation="0"
+                        class="theme-btn"
+                        v-show="speeddial"
                         @click="$vuetify.theme.dark = !$vuetify.theme.dark"
-                        color="grey"
                         v-bind="attrs"
                         v-on="on"
-
                     >
                         <v-icon color="white">mdi-invert-colors</v-icon>
                     </v-btn>
-                </template>
-                <span>{{ $vuetify.theme.dark ? 'Light':'Dark'}} theme</span>
-            </v-tooltip>
-        </v-speed-dial>
+                </transition>
+            </template>
+            <span>{{ $vuetify.theme.dark ? 'Light' : 'Dark' }} theme</span>
+        </v-tooltip>
+
+        <v-tooltip left color="orange">
+            <template v-slot:activator="{ on, attrs }">
+                <transition name="bounce">
+                    <v-btn
+                        color="orange"
+                        dark
+                        fab
+                        elevation="0"
+                        small
+                        class="event-btn"
+                        v-show="speeddial"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <ReminderForm icon="mdi-reminder" />
+                    </v-btn>
+                </transition>
+            </template>
+            <span>Add Reminder</span>
+        </v-tooltip>
+
+        <v-tooltip left color="success">
+            <template v-slot:activator="{ on, attrs }">
+                <transition name="bounce">
+                    <v-btn
+                        color="success"
+                        dark
+                        fab
+                        elevation="0"
+                        small
+                        class="task-btn"
+                        v-show="speeddial"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <TaskForm icon="mdi-checkbox-marked-circle-outline" />
+                    </v-btn>
+                </transition>
+            </template>
+            <span>Add Task</span>
+        </v-tooltip>
+        <v-tooltip left color="primary">
+            <template v-slot:activator="{ on, attrs }">
+                <transition name="bounce">
+                    <v-btn
+                        color="primary"
+                        dark
+                        fab
+                        elevation="0"
+                        small
+                        class="reminder-btn"
+                        v-show="speeddial"
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <EventForm icon="mdi-calendar-edit" />
+                    </v-btn>
+                </transition>
+            </template>
+            <span>Add Event</span>
+        </v-tooltip>
+        <v-btn color="red" dark fab large elevation="0" class="v-btn--example" @click="speeddial = !speeddial">
+            <v-icon>mdi-{{ !speeddial ? 'plus' : 'close' }} </v-icon>
+        </v-btn>
     </div>
 </template>
 
@@ -223,14 +238,15 @@ export default {
     components: { EventForm, TaskForm, ReminderForm, ChangeProfile },
     data() {
         return {
+           
             drawer: false,
-
             menuTab: false,
             profileView: false,
             filterEvent: false,
             filterTask: false,
             filterReminder: false,
             filterHoliday: false,
+            speeddial: false,
 
             links: [
                 { icon: 'calendar-month-outline', text: 'Calendar', route: '/calendar' },
@@ -241,10 +257,6 @@ export default {
                 email: 'skpkorba9009@gmail.com',
                 profile: '/avator-1.jpg',
             },
-            fab: false,
-            fling: false,
-
-            tabs: null,
         };
     },
 
@@ -253,7 +265,18 @@ export default {
             if (!this.drawer) return 'mdi-menu';
             return 'mdi-close';
         },
-        
+        activeFab() {
+            switch (this.tabs) {
+                case 'one':
+                    return { color: 'success', icon: 'mdi-share-variant' };
+                case 'two':
+                    return { color: 'red', icon: 'mdi-pencil' };
+                case 'three':
+                    return { color: 'green', icon: 'mdi-chevron-up' };
+                default:
+                    return {};
+            }
+        },
     },
     created() {},
     methods: {
@@ -280,5 +303,60 @@ export default {
 
 .v-btn--floating {
     position: relative;
+}
+
+.v-btn--example {
+    bottom: 0;
+    right: 10px;
+    position: fixed;
+
+    margin: 0 0 16px 16px;
+}
+.event-btn {
+    bottom: 70px;
+    right: 22px;
+    position: fixed;
+
+    margin: 0 0 16px 16px;
+}
+.task-btn {
+    bottom: 120px;
+    right: 22px;
+    position: fixed;
+
+    margin: 0 0 16px 16px;
+}
+.reminder-btn {
+    bottom: 170px;
+    right: 22px;
+    position: fixed;
+
+    margin: 0 0 16px 16px;
+}
+
+.theme-btn {
+    bottom: 220px;
+    right: 22px;
+    position: fixed;
+
+    margin: 0 0 16px 16px;
+}
+
+.bounce-enter-active {
+    animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+    animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 </style>
