@@ -238,7 +238,6 @@ export default {
     components: { EventForm, TaskForm, ReminderForm, ChangeProfile },
     data() {
         return {
-           
             drawer: false,
             menuTab: false,
             profileView: false,
@@ -309,6 +308,7 @@ export default {
     bottom: 0;
     right: 10px;
     position: fixed;
+    z-index: 1000;
 
     margin: 0 0 16px 16px;
 }
@@ -316,6 +316,7 @@ export default {
     bottom: 70px;
     right: 22px;
     position: fixed;
+    z-index: 1000;
 
     margin: 0 0 16px 16px;
 }
@@ -323,6 +324,7 @@ export default {
     bottom: 120px;
     right: 22px;
     position: fixed;
+    z-index: 1000;
 
     margin: 0 0 16px 16px;
 }
@@ -330,7 +332,7 @@ export default {
     bottom: 170px;
     right: 22px;
     position: fixed;
-
+    z-index: 1000;
     margin: 0 0 16px 16px;
 }
 
@@ -338,6 +340,7 @@ export default {
     bottom: 220px;
     right: 22px;
     position: fixed;
+    z-index: 1000;
 
     margin: 0 0 16px 16px;
 }

@@ -9,13 +9,10 @@
 <script>
 export default {
     name: 'App',
-    data: () => ({
-    }),
-    
+    data: () => ({}),
 };
 </script>
 
-<style >
+<style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@500&display=swap');
-
 </style>
