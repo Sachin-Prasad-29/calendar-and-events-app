@@ -122,6 +122,7 @@
 
 <script>
 import { login, register } from '@/services/auth';
+import { mapActions} from 'vuex';
 
 
 export default {
@@ -161,7 +162,7 @@ export default {
         },
     },
     methods: {
-        
+        ...mapActions(['getUserDetails']),
         async onLogin() {
             if (this.$refs.form1.validate()) {
                 const userDetails = {
@@ -173,7 +174,7 @@ export default {
                 console.log(response);
                 this.signinEmail = this.signinPassword = '';
                 localStorage.setItem('token', response.token);
-                
+                this.getUserDetails();
                 this.$router.push('/calendar');
             }
         },

@@ -23,9 +23,17 @@
                             <v-form ref="form" class="px-6">
                                 <v-row class="mt-5">
                                     <v-col cols="12" md="6" sm="6" xs="12">
-                                        <v-text-field flat dense v-model="title" label="Title"></v-text-field>
+                                        <v-text-field
+                                        
+                                            clear-icon="mdi-close-circle"
+                                            clearable
+                                            flat
+                                            dense
+                                            v-model="title"
+                                            label="Title"
+                                        ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" md="6" sm="6" xs="12">
+                                    <v-col cols="6" md="6" sm="6" xs="6">
                                         <v-menu
                                             v-model="menu2"
                                             :close-on-content-click="true"
@@ -36,6 +44,8 @@
                                         >
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-text-field
+                                                    clear-icon="mdi-close-circle"
+                                                    clearable
                                                     v-model="createdOn"
                                                     label="Created on"
                                                     append-icon="mdi-calendar-blank-outline"
@@ -48,7 +58,7 @@
                                             <v-date-picker v-model="createdOn" @input="menu2 = false"></v-date-picker>
                                         </v-menu>
                                     </v-col>
-                                    <v-col cols="12" md="6" sm="6" xs="12">
+                                    <v-col cols="6" md="6" sm="6" xs="6">
                                         <v-menu
                                             v-model="menu1"
                                             :close-on-content-click="true"
@@ -59,6 +69,8 @@
                                         >
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-text-field
+                                                    clear-icon="mdi-close-circle"
+                                                    clearable
                                                     v-model="startDate"
                                                     label="Start date"
                                                     append-icon="mdi-calendar-blank-outline"
@@ -78,14 +90,18 @@
                                     </v-col>
                                     <v-col cols="12" md="6" sm="6" xs="12">
                                         <v-text-field
+                                            clear-icon="mdi-close-circle"
+                                            clearable
                                             dense
                                             label="Created By"
                                             v-model="createdBy"
                                             class="mt-7"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" md="6" sm="6" xs="12">
+                                    <v-col cols="6" md="6" sm="6" xs="16">
                                         <v-select
+                                            clear-icon="mdi-close-circle"
+                                            clearable
                                             flat
                                             dense
                                             :items="categories"
@@ -93,8 +109,8 @@
                                             v-model="category"
                                         ></v-select>
                                     </v-col>
-                                    <v-col cols="12" md="6" sm="6" xs="12">
-                                        <v-checkbox v-model="completed" label="Completed"></v-checkbox>
+                                    <v-col cols="6" md="6" sm="6" xs="6">
+                                        <v-checkbox v-model="completed" label="Completed / Uncompleted" dense></v-checkbox>
                                     </v-col>
                                     <v-col cols="12" md="12" sm="12" xs="12">
                                         <v-btn
@@ -139,15 +155,14 @@
                     </v-btn>
                 </v-col>
             </v-row>
-            
         </v-container>
-        <v-btn color="success" elevation="3" fab small  class="v-btn--desc" @click="speeddial = !speeddial">
+        <v-btn color="success" elevation="3" fab small class="v-btn--desc" @click="speeddial = !speeddial">
             <v-icon>mdi-chevron-up </v-icon>
         </v-btn>
-        <v-btn color="primary" elevation="3" dark fab small  class="v-btn--example" @click="speeddial = !speeddial">
-            <span large>{{page}}</span>
+        <v-btn color="primary" elevation="3" dark fab small class="v-btn--example" @click="speeddial = !speeddial">
+            <span large>{{ page }}</span>
         </v-btn>
-        <v-btn color="success" elevation="3"  fab small  class="v-btn--insc" @click="speeddial = !speeddial">
+        <v-btn color="success" elevation="3" fab small class="v-btn--insc" @click="speeddial = !speeddial">
             <v-icon>mdi-chevron-down </v-icon>
         </v-btn>
     </div>
@@ -155,7 +170,7 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { getEvents } from '@/services/getEvents';
+import { getEvents } from '@/services/event.services';
 export default {
     name: 'EventPage',
     components: { NavBar },
@@ -219,7 +234,7 @@ export default {
     margin: 10px 0;
 }
 .v-btn--desc {
-    bottom:420px;
+    bottom: 420px;
     right: 10px;
     position: fixed;
 

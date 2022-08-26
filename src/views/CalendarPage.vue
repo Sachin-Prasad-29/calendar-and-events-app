@@ -9,8 +9,8 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { getAllEvents } from '@/services/getEvents';
-import { mapActions } from 'vuex';
+import { getAllEvents } from '@/services/event.services';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'CalendarPage',
@@ -23,9 +23,14 @@ export default {
     created() {
         this.loadCalender();
     },
+    computed: {
+        ...mapGetters(['userDetails']),
+    },
     methods: {
-        ...mapActions(['getAllUsers']),
+        ...mapActions(['getUserDetails', 'getAllUsers']),
+        
         async loadCalender() {
+            if(!this.userDetails)this.getUserDetails()
             const response = await getAllEvents();
             console.log(response);
             this.allEvents = response.events;

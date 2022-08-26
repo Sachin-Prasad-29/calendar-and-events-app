@@ -185,7 +185,7 @@
 </template>
 
 <script>
-import { addEvent } from '@/services/addEvents';
+import { addEvent } from '@/services/event.services';
 import { mapGetters } from 'vuex';
 
 export default {

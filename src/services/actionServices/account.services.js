@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const getAllEvents = async () => {
+const getUserDetails = async () => {
     const reqData = {
         method: 'get',
-        url: `events`,
+        url: `auth/profile`,
         headers: {
             Authorization: localStorage.getItem('token'),
         },
@@ -18,10 +18,10 @@ const getAllEvents = async () => {
     }
 };
 
-const getEvents = async (params) => {
+const getAllUsers = async () => {
     const reqData = {
         method: 'get',
-        url: `events/filter?${params}`,
+        url: `auth/users`,
         headers: {
             Authorization: localStorage.getItem('token'),
         },
@@ -31,9 +31,9 @@ const getEvents = async (params) => {
         //console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
+        // console.log(error.response.data);
         return error.response.data;
     }
 };
 
-export { getAllEvents, getEvents };
+export { getAllUsers, getUserDetails };

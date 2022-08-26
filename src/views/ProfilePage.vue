@@ -12,7 +12,7 @@
                         </template>
 
                         <v-avatar size="200">
-                            <v-img :src="user.profilePic"></v-img>
+                            <v-img src="@/assets/images/avator-1.jpg"></v-img>
                         </v-avatar>
                     </v-badge>
                     <div class="main-title mb-1">Welcome, {{ user.name }}</div>
@@ -20,8 +20,8 @@
                     <div class="text-h7 mb-2">{{ user.email }}</div>
                 </v-col>
             </v-row>
-            <v-card class="px-7" elevation="0" outlined>
-                <div class="personal-title">Basics info</div>
+            <div class="px-7 card-div">
+                <div class="personal-title mb-1">Basics info</div>
                 <v-row>
                     <v-col cols="12" md="6" sm="6" class="">
                         <div v-show="!edit" class="peronal-info ct--text">
@@ -32,39 +32,24 @@
                             <v-icon> mdi-email-outline </v-icon>
                             <span class="font-weight-bold ml-2">Email : </span>{{ user.email }}
                         </div>
+                        <v-text-field class="ml-1" v-show="edit" dense label="Name" v-model="name"></v-text-field>
                         <v-text-field
-                            rounded
-                            v-show="edit"
-                            outlined
-                            dense
-                            label="Name"
-                            v-model="user.name"
-                        ></v-text-field>
-                        <v-text-field
-                            rounded
                             v-show="edit"
                             disabled
-                            outlined
+                            class="ml-1"
                             dense
                             label="Email"
                             v-model="user.email"
                         ></v-text-field>
+                        <v-text-field class="ml-1" v-show="edit" dense label="Phone" v-model="phone"></v-text-field>
                         <v-text-field
+                            class="ml-1"
+                            type="date"
                             v-show="edit"
-                            rounded
-                            outlined
-                            dense
-                            label="Phone"
-                            v-model="user.phone"
-                        ></v-text-field>
-                        <v-text-field
-                            rounded
-                            v-show="edit"
-                            outlined
                             flat
                             dense
                             label="birthday"
-                            v-model="user.birthday"
+                            v-model="birthday"
                         ></v-text-field>
 
                         <div v-show="!edit" class="peronal-info ct--text">
@@ -73,7 +58,7 @@
                         </div>
                         <div v-show="!edit" class="peronal-info ct--text">
                             <v-icon> mdi-cake-variant-outline </v-icon>
-                            <span class="font-weight-bold ml-2">Birthday : </span>{{ user.birthday }}
+                            <span class="font-weight-bold ml-2">Birthday : </span>{{ birthday }}
                         </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
@@ -81,31 +66,23 @@
                             <v-icon> mdi-gender-male-female </v-icon>
                             <span class="font-weight-bold ml-2">Gender : </span>{{ user.gender }}
                         </div>
-                         
+
+                        <v-text-field class="ml-1" v-show="edit" dense label="Gender" v-model="gender"></v-text-field>
+
                         <v-text-field
-                            rounded
+                            class="ml-1"
                             v-show="edit"
-                            outlined
-                            dense
-                            label="Gender"
-                            v-model="user.gender"
-                        ></v-text-field>
-                        
-                        <v-text-field
-                            rounded
-                            v-show="edit"
-                            outlined
                             dense
                             label="Address"
-                            v-model="user.location"
+                            v-model="location"
                         ></v-text-field>
                         <v-text-field
-                            rounded
+                            class="ml-1"
                             v-show="edit"
-                            outlined
+                            
                             dense
                             label="website"
-                            v-model="user.website"
+                            v-model="website"
                         ></v-text-field>
 
                         <div v-show="!edit" class="peronal-info ct--text">
@@ -120,18 +97,18 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                   
                     <v-col cols="12 " class="text-center mb-4">
-                         
-                        <v-btn rounded color="success  white--text" class=" px-5 mr-2 text-capitalize" v-show="edit" @click="submit">
+                        <v-btn
+                            rounded
+                            color="success  white--text"
+                            class="px-5 mr-2 text-capitalize"
+                            v-show="edit"
+                            @click="submit"
+                        >
                             <v-icon>mdi-content-save</v-icon>
-                           <span class="ml-2 "> Save </span> 
+                            <span class="ml-2"> Save </span>
                         </v-btn>
-                        
-                        <v-btn rounded color="orange white--text" class="text-capitalize" v-show="edit">
-                            <v-icon> mdi-refresh-circle </v-icon>
-                            <span class="ml-1"> Reset </span> 
-                        </v-btn>
+
                         <v-btn
                             rounded
                             color="red white--text"
@@ -140,17 +117,15 @@
                             v-show="edit"
                         >
                             <v-icon>mdi-close-circle</v-icon>
-                           <span class="ml-1"> cancel </span> 
+                            <span class="ml-1"> cancel </span>
                         </v-btn>
                         <v-btn rounded color="primary" @click="edit = !edit" v-show="!edit">
                             <v-icon>mdi-pencil-circle</v-icon>
                             <span class="ml-1 text-capitalize">Edit Profile </span>
                         </v-btn>
                     </v-col>
-                    
                 </v-row>
-                <v-btn><EventForm/></v-btn>
-            </v-card>
+            </div>
         </v-container>
     </div>
 </template>
@@ -158,42 +133,68 @@
 <script>
 import NavBar from '@/components/NavBar.vue';
 import ChangeProfile from '@/components/ChangeProfile.vue';
-import EventForm from '@/components/EventForm.vue'
+import { mapGetters, mapActions } from 'vuex';
+import { editUserProfile } from '@/services/profile.services';
+
 export default {
     name: 'ProfilePage',
-    components: { NavBar, ChangeProfile, EventForm },
+    components: { NavBar, ChangeProfile },
     data() {
         return {
             edit: false,
-            user: {
-                name: 'Sachin',
-                email: 'skpkorba@gmail.com',
-                birthday: '29 -09',
-                location: 'Hyderabad',
-                phone: '8787',
-                profilePic: '/avator-1.jpg',
-                website: 'fksdjfk',
-                gender: 'Male',
-            },
+            user: {},
+            name: '',
+            birthday: '',
+            email: '',
+            location: '',
+            phone: '',
+            gender: '',
+            website: '',
         };
     },
-    methods:{
-        submit(){
+    computed: {
+        ...mapGetters(['userDetails']),
+    },
+    created() {
+        this.loadProfile();
+    },
+    methods: {
+        ...mapActions(['getUserDetails']),
+        async loadProfile() {
+            if (!this.userDetails) await this.getUserDetails();
+            this.user = this.userDetails;
+            this.name = this.user.name;
+            this.gender = this.user.gender;
+            this.location = this.user.location;
+            this.website = this.user.website;
+            this.birthday = this.user.birthday.substring(0, 10) || '-';
+            this.phone = this.user.phone;
+        },
+        async submit() {
             const profileDetails = {
-                name:this.user.name,
-                birthday:this.user.birthday,
-                location:this.user.location,
-                phone:this.user.phone,
-                website:this.user.website,
-                gender:this.user.gender
-            }
-            console.log(profileDetails);
-        }
-    }
+                name: this.name,
+                birthday: this.birthday,
+                location: this.location,
+                phone: this.phone,
+                website: this.website,
+                gender: this.gender,
+            };
+            const response = await editUserProfile(profileDetails);
+            console.log(response);
+            await this.getUserDetails();
+            this.user = this.userDetails;
+            this.edit = false;
+        },
+    },
 };
 </script>
 
 <style scoped>
+.card-div{
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    background: rgba(128, 128, 128, 0.096);
+}
 .personal-title {
     padding: 6px;
     padding-top: 12px;

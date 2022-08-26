@@ -1,15 +1,14 @@
 import axios from 'axios';
 
-const addEvent = async (eventDetails) => {
-    
+const editUserProfile = async (profileDetails) => {
     const reqData = {
-        method: 'post',
-        url: `events`,
+        method: 'patch',
+        url: `auth/profile`,
         headers: {
             Authorization: localStorage.getItem('token'),
             'Content-Type': 'application/json',
         },
-        data:eventDetails
+        data:profileDetails
     };
     try {
         const response = await axios(reqData);
@@ -19,7 +18,6 @@ const addEvent = async (eventDetails) => {
         //console.log(error.response.data);
         return error.response.data;
     }
-
 };
 
-export { addEvent };
+export { editUserProfile };
