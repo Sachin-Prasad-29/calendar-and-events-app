@@ -168,47 +168,41 @@
             <v-icon>mdi-chevron-down </v-icon>
         </v-btn>
         <v-container class="">
-            <transition-group
-                tag="ul"
-                enter-active-class="animate__animated animate__bounceIn"
-                leave-active-class="animate__animated animate__bounceOut"
+            <v-card
+                elevation="1"
+                outlined
+                class="pt-1 px-4 justify-space-between d-flex"
+                v-for="event in allEvents"
+                :key="event._id"
             >
-                <v-card
-                    elevation="1"
-                    outlined
-                    class="pt-1 px-4 justify-space-between d-flex"
-                    v-for="event in allEvents"
-                    :key="event._id"
-                >
-                    <!-- <v-row class="align-center justify-space-around"> -->
-                    <v-card elevation="0" class="">
-                        <v-btn fab text elevation="0" small color="primary"
-                            ><span class="text-h5">{{ event.startDate.substring(8, 10) }}</span></v-btn
-                        >
-                        <span class="caption ml-1">{{ month[parseInt(event.startDate.substring(5, 7)) - 1] }}, </span>
-                        <span class="caption mr-5 ml-1">{{ event.startDate.substring(0, 4) }} </span>
-                        <v-avatar size="25" :class="event.color" class="mb-1"> </v-avatar>
-                        <span class="ml-5 mr-3"
-                            >{{ event.startTime.hours > 9 ? '' : 0 }}{{ event.startTime.hours }} :
-                            {{ event.startTime.minutes > 9 ? '' : 0 }}{{ event.startTime.minutes }}
-                        </span>
-                        <span class="ml-5">{{ event.name }}</span>
-                    </v-card>
-
-                    <v-card elevation="0" class="">
-                        <v-btn x-small fab elevation="0" color=" success" class="ma-1">
-                            <v-icon small>mdi-eye-outline</v-icon>
-                        </v-btn>
-                        <v-btn x-small fab elevation="0" color=" primary" class="ma-1">
-                            <v-icon small>mdi-pencil-outline</v-icon>
-                        </v-btn>
-                        <v-btn x-small fab elevation="0" color="error" class="ma-1">
-                            <v-icon small>mdi-delete-outline</v-icon>
-                        </v-btn>
-                    </v-card>
-                    <!-- </v-row> -->
+                <!-- <v-row class="align-center justify-space-around"> -->
+                <v-card elevation="0" class="">
+                    <v-btn fab text elevation="0" small color="primary"
+                        ><span class="text-h5">{{ event.startDate.substring(8, 10) }}</span></v-btn
+                    >
+                    <span class="caption ml-1">{{ month[parseInt(event.startDate.substring(5, 7)) - 1] }}, </span>
+                    <span class="caption mr-5 ml-1">{{ event.startDate.substring(0, 4) }} </span>
+                    <v-avatar size="25" :class="event.color" class="mb-1"> </v-avatar>
+                    <span class="ml-5 mr-3"
+                        >{{ event.startTime.hours > 9 ? '' : 0 }}{{ event.startTime.hours }} :
+                        {{ event.startTime.minutes > 9 ? '' : 0 }}{{ event.startTime.minutes }}
+                    </span>
+                    <span class="ml-5">{{ event.name }}</span>
                 </v-card>
-            </transition-group>
+
+                <v-card elevation="0" class="">
+                    <v-btn x-small fab elevation="0" color=" success" class="ma-1">
+                        <v-icon small>mdi-eye-outline</v-icon>
+                    </v-btn>
+                    <v-btn x-small fab elevation="0" color=" primary" class="ma-1">
+                        <v-icon small>mdi-pencil-outline</v-icon>
+                    </v-btn>
+                    <v-btn x-small fab elevation="0" color="error" class="ma-1">
+                        <v-icon small>mdi-delete-outline</v-icon>
+                    </v-btn>
+                </v-card>
+                <!-- </v-row> -->
+            </v-card>
         </v-container>
     </div>
 </template>
