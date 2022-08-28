@@ -121,7 +121,7 @@ export default {
                 console.log(new Date());
 
                 const eventDetails = {
-                    title: this.title,
+                    name: this.title,
                     startDate: this.startDate,
                     endDate: this.endDate,
                     startTime: {
@@ -136,11 +136,12 @@ export default {
                 const response = await addEvent(eventDetails);
                 if (response.success) {
                     console.log(response);
+                    this.dialog = false;
                 } else {
                     alert('Some Error Happended');
                 }
             }
-            console.log('hello')
+           
         },
         reset() {
             this.$refs.form.reset();

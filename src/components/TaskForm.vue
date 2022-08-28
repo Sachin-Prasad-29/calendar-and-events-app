@@ -143,7 +143,7 @@ export default {
         async submit() {
             if (this.$refs.form.validate()) {
                 const eventDetails = {
-                    title: this.title,
+                    name: this.title,
                     startDate: this.startDate,
                     startTime: {
                         hours: parseInt(this.startTime.substring(0, 2)),
@@ -155,13 +155,14 @@ export default {
                     notification: this.notification,
                     notifyBefore: this.notifyBefore,
                     location: this.location,
-                    description: this.description,
+                    details: this.description,
                 };
                 
                 const response = await addEvent(eventDetails);
                 
                 if (response.success) {
                     console.log(response);
+                    this.dialog = false;
                 } else {
                     alert('Some Error Happended');
                 }

@@ -98,8 +98,8 @@
                                         chips
                                         color="blue-grey lighten-2"
                                         label="Add Attendees"
-                                        item-text="name"
-                                        item-value="name"
+                                        item-text="email"
+                                        item-value="email"
                                         multiple
                                     >
                                         <template v-slot:selection="data">
@@ -186,7 +186,7 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     name: 'EventForm',
@@ -218,19 +218,20 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['allUsers']),
+        ...mapGetters(['allUsers', 'userDetails']),
         people() {
             return this.allUsers;
         },
     },
     methods: {
+        ...mapActions(['loader']),
         async submit() {
             console.log(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
             if (this.$refs.form.validate()) {
                 console.log(new Date());
 
                 const eventDetails = {
-                    title: this.title,
+                    name: this.title,
                     startDate: this.startDate,
                     endDate: this.endDate,
                     startTime: {
@@ -247,13 +248,15 @@ export default {
                     notification: this.notification,
                     notifyBefore: this.notifyBefore,
                     location: this.location,
-                    description: this.description,
+                    details: this.description,
                 };
 
                 const response = await addEvent(eventDetails);
 
                 if (response.success) {
                     console.log(response);
+                    this.loader();
+                    this.dialog = false;
                 } else {
                     alert('Some Error Happended');
                 }

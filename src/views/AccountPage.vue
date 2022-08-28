@@ -122,8 +122,7 @@
 
 <script>
 import { login, register } from '@/services/auth';
-import { mapActions} from 'vuex';
-
+import { mapActions } from 'vuex';
 
 export default {
     name: 'AccountPage',
@@ -172,10 +171,14 @@ export default {
 
                 const response = await login(userDetails);
                 console.log(response);
-                this.signinEmail = this.signinPassword = '';
-                localStorage.setItem('token', response.token);
-                this.getUserDetails();
-                this.$router.push('/calendar');
+                if (response.success) {
+                    this.signinEmail = this.signinPassword = '';
+                    localStorage.setItem('token', response.token);
+                    await this.getUserDetails();
+                    this.$router.push('/calendar');
+                } else {
+                    console.log('Something error happend');
+                }
             }
         },
         async onRegister() {
@@ -187,8 +190,10 @@ export default {
                 };
                 const response = await register(userDetails);
                 console.log(response);
-                this.signupEmail = this.signupPassword = this.name = '';
                 this.login = true;
+                setTimeout(() => {
+                    this.signupEmail = this.signupPassword = this.name = '';
+                }, 1500);
             }
         },
     },

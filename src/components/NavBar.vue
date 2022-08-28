@@ -14,9 +14,10 @@
                 </router-link>
             </v-toolbar-title>
 
-            <v-spacer></v-spacer>
+            
             <!-- drop down menu -->
-            <div></div>
+             <v-spacer></v-spacer>
+            <h4 class="mr-4 mt-1 text--ct">{{date |date}}</h4>
             <v-menu
                 :nudge-width="220"
                 transition="slide-y-transition"
@@ -28,7 +29,7 @@
             >
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn fab elevation="0 white" small class="pa-0" outlined v-bind="attrs" v-on="on">
-                        <v-avatar size="39"><img :src="user.profile" alt="" /></v-avatar>
+                        <v-avatar size="39"><img src='@/assets/images/noPic.png' alt="" /></v-avatar>
                     </v-btn>
                 </template>
                 <v-card max-width="300px">
@@ -43,11 +44,11 @@
                                     </template>
 
                                     <v-avatar size="100">
-                                        <v-img :src="user.profile"></v-img>
+                                        <v-img src='@/assets/images/noPic.png'></v-img>
                                     </v-avatar>
                                 </v-badge>
-                                <div class="subheading mt-4">{{ user.name }}</div>
-                                <div class="caption subheading mt-1">{{ user.email }}</div>
+                                <div class="subheading mt-4">{{userInfo.name}}</div>
+                                <div class="caption subheading mt-1">{{ userInfo.email }}</div>
                                 <div class="mt-3">
                                     <v-btn color="primary " text outlined rounded router to="/profile">
                                         <v-icon> mdi-emoticon-happy-outline</v-icon>
@@ -56,7 +57,7 @@
                                 </div>
 
                                 <div class="my-4">
-                                    <v-btn color="error" text outlined rounded>
+                                    <v-btn color="error" text outlined rounded @click="signOut">
                                         <v-icon> mdi-location-exit </v-icon>
                                         <span class="text-capitalize ml-2"> sign out </span>
                                     </v-btn>
@@ -72,9 +73,9 @@
             <v-layout column text-center>
                 <v-flex class="mt-5">
                     <v-avatar size="100">
-                        <img :src="user.profile" alt="" />
+                        <img src='@/assets/images/noPic.png' alt="" />
                     </v-avatar>
-                    <p class="subheading mt-4">{{ user.name }}</p>
+                    <p class="subheading mt-4">{{ userInfo.name }}</p>
                 </v-flex>
             </v-layout>
 
@@ -233,6 +234,7 @@ import EventForm from '@/components/EventForm';
 import TaskForm from '@/components/TaskForm';
 import ReminderForm from '@/components/ReminderForm';
 import ChangeProfile from '@/components/ChangeProfile';
+import {mapGetters} from 'vuex'
 export default {
     name: 'NavBar',
     components: { EventForm, TaskForm, ReminderForm, ChangeProfile },
@@ -246,20 +248,24 @@ export default {
             filterReminder: false,
             filterHoliday: false,
             speeddial: false,
+            date:new Date(),
+            user :this.userDetails,
 
             links: [
                 { icon: 'calendar-month-outline', text: 'Calendar', route: '/calendar' },
                 { icon: 'clipboard-check-outline', text: 'All Events', route: '/event' },
             ],
-            user: {
-                name: 'Sachin Prasad',
-                email: 'skpkorba9009@gmail.com',
-                profile: '/avator-1.jpg',
-            },
         };
     },
 
     computed: {
+        ...mapGetters(['userDetails']),
+        userInfo(){ 
+            if(this.userDetails)
+                  return this.userDetails
+
+           return ''
+        },
         menuIcon() {
             if (!this.drawer) return 'mdi-menu';
             return 'mdi-close';
@@ -284,6 +290,10 @@ export default {
         },
         changeProfile() {
             console.log('this');
+        },
+        signOut() {
+            localStorage.clear();
+            this.$router.push('/auth');
         },
     },
 };

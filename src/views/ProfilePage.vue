@@ -92,7 +92,7 @@
                         <div v-show="!edit" class="peronal-info ct--text">
                             <v-icon> mdi-web </v-icon>
                             <span class="font-weight-bold ml-2">Website : </span
-                            ><a href="user.website">{{ user.website }}</a>
+                            ><a :href="user.website">{{ user.website }}</a>
                         </div>
                     </v-col>
                 </v-row>
