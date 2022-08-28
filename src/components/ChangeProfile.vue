@@ -61,6 +61,8 @@
                                                     accept="image/png, image/jpeg, image/jpg"
                                                     prepend-inner-icon="mdi-camera"
                                                     label="Profile Image"
+                                                    name
+                                                    @change="onFileSelect"
                                                 ></v-file-input>
                                             </v-card-text>
 
@@ -110,6 +112,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'ChangeProfile',
     data() {
@@ -122,12 +125,21 @@ export default {
                 profile: '/avator-1.jpg',
             },
             rules: [(value) => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!'],
+
+            selectedFile:null
         };
     },
     methods: {
+        onFileSelect(event){
+            console.log(event);
+            this.selectedFile = event
+        },
         submit() {
-            console.log('Upload success');
-            this.changeDialog = false;
+
+            
+            const fd = new FormData();
+            fd.append('image',this.selectedFile,this.selectedFile.name);
+            axios.post('')
         },
     },
 };
