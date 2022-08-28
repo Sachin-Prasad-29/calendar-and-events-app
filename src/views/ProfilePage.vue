@@ -12,7 +12,7 @@
                         </template>
 
                         <v-avatar size="200">
-                            <v-img src="@/assets/images/avator-1.jpg"></v-img>
+                            <v-img :src="user.profilePic"></v-img>
                         </v-avatar>
                     </v-badge>
                     <div class="main-title mb-1">Welcome, {{ user.name }}</div>

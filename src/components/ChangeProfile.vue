@@ -28,7 +28,7 @@
 
                                 <v-col cols="12" class="mt-3">
                                     <v-avatar size="200">
-                                        <img :src="user.profile" alt="" />
+                                        <v-img :src="userInfo.profilePic" alt="" />
                                     </v-avatar>
                                 </v-col>
 
@@ -51,18 +51,17 @@
                                         </template>
 
                                         <v-card>
-                                            <v-card-title class="text-h5 grey lighten-2">
+                                            <v-card-title class="text-h5  lighten-2">
                                                 Change profile picture
                                             </v-card-title>
 
                                             <v-card-text class="pa-7">
                                                 <v-file-input
                                                     :rules="rules"
-                                                    accept="image/png, image/jpeg, image/jpg"
+                                                    accept="image/png, image/jpeg, image/jpg, image/gif"
                                                     prepend-inner-icon="mdi-camera"
                                                     label="Profile Image"
-                                                    name
-                                                    @change="onFileSelect"
+                                                    @change="uploadImage"
                                                 ></v-file-input>
                                             </v-card-text>
 
@@ -112,34 +111,38 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { uploadProfile } from '@/services/profile.services';
+import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'ChangeProfile',
     data() {
         return {
             dialog: false,
             changeDialog: false,
-            user: {
-                name: 'Sachin Prasad',
-                email: 'skpkorba9009@gmail.com',
-                profile: '/avator-1.jpg',
-            },
-            rules: [(value) => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!'],
+            file: null,
 
-            selectedFile:null
+            rules: [(value) => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!'],
         };
     },
-    methods: {
-        onFileSelect(event){
-            console.log(event);
-            this.selectedFile = event
+    computed: {
+        ...mapGetters(['userDetails']),
+        userInfo() {
+            if(this.userDetails)
+                 return this.userDetails;
+            return ''
         },
-        submit() {
-
-            
-            const fd = new FormData();
-            fd.append('image',this.selectedFile,this.selectedFile.name);
-            axios.post('')
+    },
+    methods: {
+        ...mapActions(['loader']),
+        uploadImage(event) {
+            this.file = event;
+            console.log(event);
+        },
+        async submit() {
+            const response = await uploadProfile(this.file);
+            console.log(response);
+            await this.loader();
+            this.changeDialog = false;
         },
     },
 };

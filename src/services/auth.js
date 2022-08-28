@@ -24,11 +24,11 @@ const login = async (userDetails) => {
     };
     try {
         const response = await axios(reqData);
-       // console.log(response.data);
+        // console.log(response.data);
         return response.data;
     } catch (error) {
-       //console.log(error.response.data);
-        return error.response.data;
+        //console.log(error.response.data);
+        return error.response;
     }
 };
 

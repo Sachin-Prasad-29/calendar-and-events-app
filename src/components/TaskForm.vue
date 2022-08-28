@@ -111,22 +111,18 @@
 </template>
 
 <script>
-import {addEvent} from '@/services/event.services'
-
+import { addEvent } from '@/services/event.services';
 
 export default {
     name: 'TaskForm',
-     props:['icon','name'],
+    props: ['icon', 'name'],
     data() {
         return {
             menu1: false,
             dialog: false,
             title: '',
             startDate: '',
-            endDate: '',
-            startTime: '',
-            endTime: '',
-            attendee: [],
+            startTime: '12:00',
             notification: false,
             notifyBefore: 15,
             location: '',
@@ -142,30 +138,33 @@ export default {
     methods: {
         async submit() {
             if (this.$refs.form.validate()) {
+                this.spinner = this.$loading.show(this.$spinner);
                 const eventDetails = {
                     name: this.title,
                     startDate: this.startDate,
                     startTime: {
                         hours: parseInt(this.startTime.substring(0, 2)),
                         minutes: parseInt(this.startTime.substring(3, 5)),
-                    }, 
+                    },
                     createdOn: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }),
                     category: 'task',
-                    attendee: this.attendee,
                     notification: this.notification,
                     notifyBefore: this.notifyBefore,
                     location: this.location,
                     details: this.description,
                 };
-                
+
                 const response = await addEvent(eventDetails);
-                
+
                 if (response.success) {
+                    this.$toast.success('Task Added Successfully');
                     console.log(response);
                     this.dialog = false;
                 } else {
-                    alert('Some Error Happended');
+                    console.log(response);
+                    this.$toast.error('Opps ! Something went wrong.');
                 }
+                this.spinner.hide();
             }
         },
         reset() {

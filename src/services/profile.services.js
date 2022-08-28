@@ -8,7 +8,7 @@ const editUserProfile = async (profileDetails) => {
             Authorization: localStorage.getItem('token'),
             'Content-Type': 'application/json',
         },
-        data:profileDetails
+        data: profileDetails,
     };
     try {
         const response = await axios(reqData);
@@ -20,4 +20,26 @@ const editUserProfile = async (profileDetails) => {
     }
 };
 
-export { editUserProfile };
+const uploadProfile = async (data) => {
+    let formData = new FormData();
+    formData.append('photo', data);
+    const reqData = {
+        method: 'patch',
+        url: `auth/profilepic`,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: localStorage.getItem('token'),
+        },
+        data: formData,
+    };
+    try {
+        const response = await axios(reqData);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
+    }
+};
+
+export { editUserProfile, uploadProfile };

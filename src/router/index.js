@@ -5,6 +5,7 @@ import CalendarPage from '@/views/CalendarPage';
 import ProfilePage from '@/views/ProfilePage';
 import EventPage from '@/views/EventPage';
 import LandingPage from '@/views/LandingPage';
+import UploadImg from '@/views/UploadImg';
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
         path: '/profile',
         name: 'profile',
         component: ProfilePage,
+    },
+    {
+        path: '/upload',
+        name: 'upload',
+        component: UploadImg,
     },
 ];
 

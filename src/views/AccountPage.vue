@@ -91,7 +91,7 @@
                                 class="success px-8 py-5"
                                 :disabled="!signupValid"
                                 @click="onRegister"
-                                >Sign in</v-btn
+                                >Sign up</v-btn
                             >
                         </div>
                     </v-form>
@@ -164,6 +164,7 @@ export default {
         ...mapActions(['getUserDetails']),
         async onLogin() {
             if (this.$refs.form1.validate()) {
+                this.spinner = this.$loading.show(this.$spinner);
                 const userDetails = {
                     email: this.signinEmail,
                     password: this.signinPassword,
@@ -172,28 +173,36 @@ export default {
                 const response = await login(userDetails);
                 console.log(response);
                 if (response.success) {
-                    this.signinEmail = this.signinPassword = '';
+                    this.$toast.success('Sign in Successful');
                     localStorage.setItem('token', response.token);
                     await this.getUserDetails();
                     this.$router.push('/calendar');
                 } else {
-                    console.log('Something error happend');
+                    this.$toast.error('Someting error happended');
+                    console.log(response);
                 }
+                this.$refs.form1.reset();
+                this.spinner.hide();
             }
         },
         async onRegister() {
             if (this.$refs.form2.validate()) {
+                this.spinner = this.$loading.show(this.$spinner);
                 const userDetails = {
                     email: this.signupEmail,
                     password: this.signupPassword,
                     name: this.name,
                 };
                 const response = await register(userDetails);
-                console.log(response);
-                this.login = true;
-                setTimeout(() => {
-                    this.signupEmail = this.signupPassword = this.name = '';
-                }, 1500);
+                if (response.success) {
+                    this.$toast.success('Sign up Successful');
+                    this.login = true;
+                } else {
+                    this.$toast.error('Something error Happended');
+                    console.log(response);
+                }
+                this.$refs.form2.reset();
+                this.spinner.hide();
             }
         },
     },

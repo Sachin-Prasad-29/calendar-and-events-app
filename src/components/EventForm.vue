@@ -47,7 +47,7 @@
                                                 :rules="startDateRule"
                                             ></v-text-field>
                                         </template>
-                                        <v-date-picker v-model="startDate" @input="menu1 = false"></v-date-picker>
+                                        <v-date-picker v-model="startDate" @input="setEndDate"></v-date-picker>
                                     </v-menu>
                                 </v-col>
                                 <v-col cols="6" sm="6" md="3" xs="6">
@@ -111,7 +111,7 @@
                                                 @click:close="remove(data.item)"
                                             >
                                                 <v-avatar left>
-                                                    <v-img src="@/assets/images/avator-1.jpg"></v-img>
+                                                    <v-img :src="data.item.profilePic"></v-img>
                                                 </v-avatar>
                                                 {{ data.item.name }}
                                             </v-chip>
@@ -122,7 +122,7 @@
                                             </template>
                                             <template v-else>
                                                 <v-list-item-avatar>
-                                                    <img src="@/assets/images/avator-1.jpg" />
+                                                    <img :src="data.item.profilePic" />
                                                 </v-list-item-avatar>
                                                 <v-list-item-content>
                                                     <v-list-item-title v-html="data.item.name"></v-list-item-title>
@@ -186,7 +186,7 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'EventForm',
@@ -199,8 +199,8 @@ export default {
             title: '',
             startDate: '',
             endDate: '',
-            startTime: '',
-            endTime: '',
+            startTime: '12:00',
+            endTime: '13:00',
 
             attendee: [],
             notification: false,
@@ -224,12 +224,9 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['loader']),
         async submit() {
-            console.log(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
             if (this.$refs.form.validate()) {
-                console.log(new Date());
-
+                this.spinner = this.$loading.show(this.$spinner);
                 const eventDetails = {
                     name: this.title,
                     startDate: this.startDate,
@@ -254,20 +251,29 @@ export default {
                 const response = await addEvent(eventDetails);
 
                 if (response.success) {
+                    this.$toast.success('Event Added Successfully');
                     console.log(response);
-                    this.loader();
+
                     this.dialog = false;
                 } else {
-                    alert('Some Error Happended');
+                    console.log(response);
+                    this.$toast.error('Opps ! Something went wrong.');
                 }
+                this.$refs.form.reset();
+                this.spinner.hide();
             }
         },
         reset() {
             this.$refs.form.reset();
         },
         remove(item) {
-            const index = this.attendee.indexOf(item.name);
+            const index = this.attendee.indexOf(item.email);
             if (index >= 0) this.attendee.splice(index, 1);
+        },
+        setEndDate(event) {
+            console.log(event);
+            this.endDate = this.startDate;
+            this.menu1 = false;
         },
     },
 };

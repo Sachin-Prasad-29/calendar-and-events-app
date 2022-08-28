@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="nav">
         <v-app-bar dense flat outlined color="">
             <v-app-bar-nav-icon @click="menu" left>
                 <v-icon> {{ menuIcon }}</v-icon>
@@ -29,7 +29,7 @@
             >
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn fab elevation="0 white" small class="pa-0" outlined v-bind="attrs" v-on="on">
-                        <v-avatar size="39"><img src='@/assets/images/noPic.png' alt="" /></v-avatar>
+                        <v-avatar size="39"><v-img :src='userInfo.profilePic' alt="" /></v-avatar>
                     </v-btn>
                 </template>
                 <v-card max-width="300px">
@@ -44,7 +44,7 @@
                                     </template>
 
                                     <v-avatar size="100">
-                                        <v-img src='@/assets/images/noPic.png'></v-img>
+                                        <v-img :src='userInfo.profilePic'></v-img>
                                     </v-avatar>
                                 </v-badge>
                                 <div class="subheading mt-4">{{userInfo.name}}</div>
@@ -73,7 +73,7 @@
             <v-layout column text-center>
                 <v-flex class="mt-5">
                     <v-avatar size="100">
-                        <img src='@/assets/images/noPic.png' alt="" />
+                        <v-img :src='userInfo.profilePic' alt="" />
                     </v-avatar>
                     <p class="subheading mt-4">{{ userInfo.name }}</p>
                 </v-flex>
@@ -249,7 +249,7 @@ export default {
             filterHoliday: false,
             speeddial: false,
             date:new Date(),
-            user :this.userDetails,
+           
 
             links: [
                 { icon: 'calendar-month-outline', text: 'Calendar', route: '/calendar' },
@@ -372,4 +372,5 @@ export default {
         transform: scale(1);
     }
 }
+
 </style>

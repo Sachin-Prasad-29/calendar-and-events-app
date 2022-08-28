@@ -1,29 +1,30 @@
 <template>
     <div class="calendar">
         <NavBar />
-        
-            <v-row class="fill-height">
-                <v-col>
-                    <v-sheet height="64">
-                        <v-toolbar flat>
-                            <v-btn outlined class="mr-4" color="primary" @click="setToday"> Today </v-btn>
-                            <v-btn fab text small color="primary" @click="prev">
-                                <v-icon small> mdi-chevron-left </v-icon>
-                            </v-btn>
-                            <v-btn fab text small color="primary" @click="next">
-                                <v-icon small> mdi-chevron-right </v-icon>
-                            </v-btn>
-                            <v-toolbar-title v-if="$refs.calendar">
-                                {{ $refs.calendar.title }}
-                            </v-toolbar-title>
-                            <v-spacer></v-spacer>
-                            <v-menu bottom right>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn outlined  color="primary" v-bind="attrs" v-on="on">
-                                        <span>{{ typeToLabel[type] }}</span>
-                                        <v-icon right> mdi-menu-down </v-icon>
-                                    </v-btn>
-                                </template>
+
+        <v-row class="fill-height side-padding">
+            <v-col>
+                <v-sheet height="64">
+                    <v-toolbar flat>
+                        <v-btn outlined class="mr-4" color="primary" @click="setToday"> Today </v-btn>
+                        <v-btn fab text small color="primary" @click="prev">
+                            <v-icon small> mdi-chevron-left </v-icon>
+                        </v-btn>
+                        <v-btn fab text small color="primary" @click="next">
+                            <v-icon small> mdi-chevron-right </v-icon>
+                        </v-btn>
+                        <v-toolbar-title v-if="$refs.calendar">
+                            {{ $refs.calendar.title }}
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-menu bottom right>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn outlined color="primary" v-bind="attrs" v-on="on">
+                                    <span>{{ typeToLabel[type] }}</span>
+                                    <v-icon right> mdi-menu-down </v-icon>
+                                </v-btn>
+                            </template>
+                           
                                 <v-list>
                                     <v-list-item @click="type = 'day'">
                                         <v-list-item-title>Day</v-list-item-title>
@@ -38,51 +39,58 @@
                                         <v-list-item-title>4 days</v-list-item-title>
                                     </v-list-item>
                                 </v-list>
-                            </v-menu>
-                        </v-toolbar>
-                    </v-sheet>
-                    <v-sheet height="600">
-                        <v-calendar
-                            ref="calendar"
-                            v-model="focus"
-                            color="primary"
-                            :events="events"
-                            :event-color="getEventColor"
-                            :type="type"
-                            @click:event="showEvent"
-                            @click:more="viewDay"
-                            @click:date="viewDay"
-                            @change="updateRange"
-                        ></v-calendar>
-                        <v-menu
-                            v-model="selectedOpen"
-                            :close-on-content-click="false"
-                            :activator="selectedElement"
-                            offset-x
-                        >
-                            <v-card elevation="0" outlined color="" min-width="350px" >
-                                <v-toolbar dense flat :color="selectedEvent.color" dark>
-                                    
-                                    <v-toolbar-title >{{ selectedEvent.name}}</v-toolbar-title>
-                                    <span class="text-h7 ml-2 mt-1">  {{selectedEvent.startDate | date}}</span>
-                                    <v-spacer></v-spacer>
-                                    
-                                   
-                                </v-toolbar>
-                                <v-card-text>
-                                    <span >{{selectedEvent.details}}</span>
-                                    <v-spacer></v-spacer>
-                                    
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-btn small outlined text color="red" @click="selectedOpen = false" class="text-capitalize"> Cancel </v-btn>
-                                </v-card-actions>
-                            </v-card>
+                           
                         </v-menu>
-                    </v-sheet>
-                </v-col>
-            </v-row>
-       
+                    </v-toolbar>
+                </v-sheet>
+
+                <v-sheet height="600">
+                    <v-calendar
+                        ref="calendar"
+                        v-model="focus"
+                        color="primary"
+                        :events="events"
+                        :event-color="getEventColor"
+                        :type="type"
+                        @click:event="showEvent"
+                        @click:more="viewDay"
+                        @click:date="viewDay"
+                        @change="updateRange"
+                    ></v-calendar>
+
+                    <v-menu
+                        v-model="selectedOpen"
+                        :close-on-content-click="false"
+                        :activator="selectedElement"
+                        offset-x
+                    >
+                        <v-card elevation="0" outlined color="" min-width="350px">
+                            <v-toolbar dense flat :color="selectedEvent.color" dark>
+                                <v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
+                                <span class="text-h7 ml-2 mt-1"> {{ selectedEvent.startDate | date }}</span>
+                                <v-spacer></v-spacer>
+                            </v-toolbar>
+                            <v-card-text>
+                                <span>{{ selectedEvent.details }}</span>
+                                <v-spacer></v-spacer>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn
+                                    small
+                                    outlined
+                                    text
+                                    color="red"
+                                    @click="selectedOpen = false"
+                                    class="text-capitalize"
+                                >
+                                    Cancel
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-menu>
+                </v-sheet>
+            </v-col>
+        </v-row>
     </div>
 </template>
 
@@ -133,6 +141,7 @@ export default {
         ...mapActions(['getUserDetails', 'getAllUsers']),
 
         async loadCalender() {
+            this.spinner = this.$loading.show(this.$spinner);
             if (!this.userDetails) this.getUserDetails();
             const response = await getAllEvents();
 
@@ -145,11 +154,12 @@ export default {
 
                 events.push(event);
             });
-           // console.log(events);
+            // console.log(events);
 
             this.events = this.updateRange(events);
             //console.log(this.events);
             this.getAllUsers();
+            this.spinner.hide();
         },
 
         viewDay({ date }) {
@@ -211,8 +221,6 @@ export default {
                 const startTimeMin = events[i].startTime.minutes;
                 events[i].start = `${startDate} ${startTimehours}:${startTimeMin}`;
                 events[i].end = `${endDate} ${endTimehours}:${endTimeMin}`;
-                
-                
             }
 
             return events;
@@ -224,3 +232,10 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.side-padding {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+</style>

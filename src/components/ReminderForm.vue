@@ -100,10 +100,9 @@ export default {
         return {
             menu1: false,
             dialog: false,
-
             title: '',
             startDate: '',
-            startTime: '',
+            startTime: '12:00',
             notification: true,
             notifyBefore: 15,
             titleRule: [
@@ -116,9 +115,8 @@ export default {
     },
     methods: {
         async submit() {
-            console.log(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
             if (this.$refs.form.validate()) {
-                console.log(new Date());
+                this.spinner = this.$loading.show(this.$spinner);
 
                 const eventDetails = {
                     name: this.title,
@@ -135,21 +133,20 @@ export default {
                 };
                 const response = await addEvent(eventDetails);
                 if (response.success) {
-                    console.log(response);
+                    this.$toast.success('Reminder Added Successfully');
+                    //console.log(response);
                     this.dialog = false;
                 } else {
-                    alert('Some Error Happended');
+                    //console.log(response);
+                    this.$toast.error('Opps ! Something went wrong.');
                 }
             }
-           
+            this.$refs.form.reset();
+            this.spinner.hide();
         },
         reset() {
             this.$refs.form.reset();
             this.notification = true;
-        },
-        remove(item) {
-            const index = this.attendee.indexOf(item.name);
-            if (index >= 0) this.attendee.splice(index, 1);
         },
     },
 };

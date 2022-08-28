@@ -26,21 +26,26 @@ export default new Vuex.Store({
 
     actions: {
         async loader() {
-            this.getUserDetails();
-            this.getAllUsers();
+            getUserDetails();
+            getAllUsers();
         },
         async getUserDetails({ commit }) {
             const userDetails = await getUserDetails();
-            if(!userDetails.profilePic){
-                userDetails.profilePic = '@/assets/images/noPic.png'
+            if (!userDetails.profilePic) {
+                userDetails.profilePic = '@/assets/images/noPic.png';
             }
             commit('setUserDetails', userDetails);
         },
         async getAllUsers({ commit }) {
             let allUsers = await getAllUsers();
-            console.log(this.state.userDetails.email);
-            const index = allUsers.indexOf(this.state.userDetails.email); // removing myself from allUser list
-            allUsers.splice(index, 1);
+
+            for (let i = 0; i < allUsers.length; i++) {
+                if (this.state.userDetails.email === allUsers[i].email) {
+                    allUsers.splice(i, 1);
+                    break;
+                }
+            }
+
             commit('setAllUsers', allUsers);
         },
     },
