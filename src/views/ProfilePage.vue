@@ -11,8 +11,8 @@
                             </v-btn>
                         </template>
 
-                        <v-avatar size="200">
-                            <v-img :src="user.profilePic"></v-img>
+                        <v-avatar class="avatar" size="200">
+                            <v-img :src="profilePic"></v-img>
                         </v-avatar>
                     </v-badge>
                     <div class="main-title mb-1">Welcome, {{ user.name }}</div>
@@ -24,11 +24,11 @@
                 <div class="personal-title mb-1">Basics info</div>
                 <v-row>
                     <v-col cols="12" md="6" sm="6" class="">
-                        <div v-show="!edit" class="peronal-info ct--text">
+                        <div v-show="!edit" class="peronal-info">
                             <v-icon> mdi-account-outline </v-icon>
                             <span class="font-weight-bold ml-2">Full Name : </span>{{ user.name }}
                         </div>
-                        <div v-show="!edit" class="peronal-info ct--text">
+                        <div v-show="!edit" class="peronal-info">
                             <v-icon> mdi-email-outline </v-icon>
                             <span class="font-weight-bold ml-2">Email : </span>{{ user.email }}
                         </div>
@@ -52,22 +52,29 @@
                             v-model="birthday"
                         ></v-text-field>
 
-                        <div v-show="!edit" class="peronal-info ct--text">
+                        <div v-show="!edit" class="peronal-info">
                             <v-icon> mdi-phone-outline </v-icon>
                             <span class="font-weight-bold ml-2">Phone : </span>{{ user.phone }}
                         </div>
-                        <div v-show="!edit" class="peronal-info ct--text">
+                        <div v-show="!edit" class="peronal-info">
                             <v-icon> mdi-cake-variant-outline </v-icon>
                             <span class="font-weight-bold ml-2">Birthday : </span>{{ birthday }}
                         </div>
                     </v-col>
                     <v-col cols="12" md="6" sm="6">
-                        <div v-show="!edit" class="peronal-info ct--text">
+                        <div v-show="!edit" class="peronal-info">
                             <v-icon> mdi-gender-male-female </v-icon>
                             <span class="font-weight-bold ml-2">Gender : </span>{{ user.gender }}
                         </div>
 
-                        <v-text-field class="ml-1" v-show="edit" dense label="Gender" v-model="gender"></v-text-field>
+                        <v-select
+                            v-show="edit"
+                            flat
+                            dense
+                            :items="genderOption"
+                            label="Gender"
+                            v-model="gender"
+                        ></v-select>
 
                         <v-text-field
                             class="ml-1"
@@ -76,20 +83,13 @@
                             label="Address"
                             v-model="location"
                         ></v-text-field>
-                        <v-text-field
-                            class="ml-1"
-                            v-show="edit"
-                            
-                            dense
-                            label="website"
-                            v-model="website"
-                        ></v-text-field>
+                        <v-text-field class="ml-1" v-show="edit" dense label="website" v-model="website"></v-text-field>
 
-                        <div v-show="!edit" class="peronal-info ct--text">
+                        <div v-show="!edit" class="peronal-info">
                             <v-icon> mdi-map-marker-outline </v-icon>
                             <span class="font-weight-bold ml-2">Address : </span>{{ user.location }}
                         </div>
-                        <div v-show="!edit" class="peronal-info ct--text">
+                        <div v-show="!edit" class="peronal-info">
                             <v-icon> mdi-web </v-icon>
                             <span class="font-weight-bold ml-2">Website : </span
                             ><a :href="user.website">{{ user.website }}</a>
@@ -142,6 +142,7 @@ export default {
     data() {
         return {
             edit: false,
+            genderOption: ['Male', 'Female', 'Other'],
             user: {},
             name: '',
             birthday: '',
@@ -154,6 +155,11 @@ export default {
     },
     computed: {
         ...mapGetters(['userDetails']),
+        profilePic() {
+            if (this.userDetails) return this.userDetails.profilePic;
+            return '';
+            
+        },
     },
     created() {
         this.loadProfile();
@@ -161,6 +167,7 @@ export default {
     methods: {
         ...mapActions(['getUserDetails']),
         async loadProfile() {
+            this.spinner = this.$loading.show(this.$spinner);
             if (!this.userDetails) await this.getUserDetails();
             this.user = this.userDetails;
             this.name = this.user.name;
@@ -169,8 +176,12 @@ export default {
             this.website = this.user.website;
             this.birthday = this.user.birthday.substring(0, 10) || '-';
             this.phone = this.user.phone;
+            setTimeout(() => {
+                this.spinner.hide();
+            }, 500);
         },
         async submit() {
+            this.spinner = this.$loading.show(this.$spinner);
             const profileDetails = {
                 name: this.name,
                 birthday: this.birthday,
@@ -184,13 +195,16 @@ export default {
             await this.getUserDetails();
             this.user = this.userDetails;
             this.edit = false;
+            setTimeout(() => {
+                this.spinner.hide();
+            }, 500);
         },
     },
 };
 </script>
 
 <style scoped>
-.card-div{
+.card-div {
     border: 1px solid lightgray;
     border-radius: 10px;
     background: rgba(128, 128, 128, 0.096);
@@ -223,5 +237,8 @@ export default {
     100% {
         transform: scale(1);
     }
+}
+.avatar {
+    border: 1px solid rgb(212, 210, 210);
 }
 </style>

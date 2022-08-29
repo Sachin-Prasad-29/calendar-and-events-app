@@ -92,11 +92,11 @@
                                     ></v-textarea>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-btn rounded outlined color="success" @click="submit" left>
+                                    <v-btn rounded elevation="1" color="success" @click="submit" left>
                                         <v-icon>mdi-plus-circle</v-icon>
                                         <span class="text-capitalize px-2">Add</span>
                                     </v-btn>
-                                    <v-btn rounded outlined color="orange" class="ml-3" @click="reset" left>
+                                    <v-btn rounded elevation="1" color="orange" class="white--text ml-3" @click="reset" left>
                                         <v-icon> mdi-refresh-circle </v-icon>
                                         <span class="text-capitalize px-2" right>Reset</span>
                                     </v-btn>
@@ -158,12 +158,14 @@ export default {
 
                 if (response.success) {
                     this.$toast.success('Task Added Successfully');
-                    console.log(response);
+                    //console.log(response);
                     this.dialog = false;
                 } else {
                     console.log(response);
                     this.$toast.error('Opps ! Something went wrong.');
                 }
+                this.$emit('refreshCalendar');
+                this.$refs.form.reset();
                 this.spinner.hide();
             }
         },

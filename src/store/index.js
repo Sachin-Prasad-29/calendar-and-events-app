@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { getUserDetails, getAllUsers } from '@/services/actionServices/account.services';
+import { getUserDetails, getAllUsers } from '@/services/action.services';
+import { getAllEvents } from '@/services/event.services';
 
 Vue.use(Vuex);
 
@@ -8,11 +9,13 @@ export default new Vuex.Store({
     state: {
         userDetails: null,
         allUsers: [],
+        allEvents: [],
     },
 
     getters: {
         userDetails: (state) => state.userDetails,
         allUsers: (state) => state.allUsers,
+        allEvents: (state) => state.allEvents,
     },
 
     mutations: {
@@ -22,13 +25,12 @@ export default new Vuex.Store({
         setAllUsers(state, allUsers) {
             state.allUsers = allUsers;
         },
+        setAllEvents(state, allEvents) {
+            state.allEvents = allEvents;
+        },
     },
 
     actions: {
-        async loader() {
-            getUserDetails();
-            getAllUsers();
-        },
         async getUserDetails({ commit }) {
             const userDetails = await getUserDetails();
             if (!userDetails.profilePic) {
@@ -45,8 +47,25 @@ export default new Vuex.Store({
                     break;
                 }
             }
-
             commit('setAllUsers', allUsers);
+        },
+        async getAllEvents({ commit }) {
+            
+            const response = await getAllEvents();
+            if (response.success) {
+                let events = [];
+                response.events.forEach((event) => {
+                    event.start = '';
+                    event.end = '';
+                    event.start = event.startDate.substr(0, 10);
+                    event.end = event.endDate ? event.endDate.substr(0, 10) : event.start;
+
+                    events.push(event);
+                });
+                commit('setAllEvents', events);
+            } else {
+                console.log(response);
+            }
         },
     },
 

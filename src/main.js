@@ -19,10 +19,10 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$spinner = {
     color: 'rgb(51, 102, 255)',
-    backgroundColor: 'lightblue',
+    backgroundColor: 'white',
     blur: '9px',
-    height: 150,
-    width: 150,
+    height: 100,
+    width: 100,
 };
 
 Vue.filter('date', dateFilter);

@@ -5,8 +5,10 @@
                 <v-icon> {{ menuIcon }}</v-icon>
             </v-app-bar-nav-icon>
 
-            <v-toolbar-title class="mr-3" left>
-                <v-img max-height="35" max-width="45" src="@/assets/images/icon3.svg"></v-img>
+            <v-toolbar-title class="mr-1" left>
+                <router-link to="/calendar">
+                    <v-img max-height="35" max-width="45" src="@/assets/images/icon3.svg"></v-img>
+                </router-link>
             </v-toolbar-title>
             <v-toolbar-title>
                 <router-link to="/calendar" class="font-weight-bold text-h5 text-decoration-none">
@@ -14,10 +16,9 @@
                 </router-link>
             </v-toolbar-title>
 
-            
             <!-- drop down menu -->
-             <v-spacer></v-spacer>
-            <h4 class="mr-4 mt-1 text--ct">{{date |date}}</h4>
+            <v-spacer></v-spacer>
+            <h4 class="mr-4 mt-1 ct--text">{{ date | date }}</h4>
             <v-menu
                 :nudge-width="220"
                 transition="slide-y-transition"
@@ -29,7 +30,7 @@
             >
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn fab elevation="0 white" small class="pa-0" outlined v-bind="attrs" v-on="on">
-                        <v-avatar size="39"><v-img :src='userInfo.profilePic' alt="" /></v-avatar>
+                        <v-avatar size="39"><v-img :src="userInfo.profilePic" alt="" /></v-avatar>
                     </v-btn>
                 </template>
                 <v-card max-width="300px">
@@ -38,26 +39,26 @@
                             <v-flex class="mt-5">
                                 <v-badge avatar color="transparent" overlap offset-x="30" offset-y="30" bottom>
                                     <template v-slot:badge>
-                                        <v-btn fab x-small elevation="0" class="h-6 info" @click="changeProfile()">
+                                        <v-btn fab x-small elevation="0" class="h-6 info">
                                             <ChangeProfile />
                                         </v-btn>
                                     </template>
 
                                     <v-avatar size="100">
-                                        <v-img :src='userInfo.profilePic'></v-img>
+                                        <v-img :src="userInfo.profilePic"></v-img>
                                     </v-avatar>
                                 </v-badge>
-                                <div class="subheading mt-4">{{userInfo.name}}</div>
-                                <div class="caption subheading mt-1">{{ userInfo.email }}</div>
+                                <div class="text-h7 mt-4">{{ userInfo.name }}</div>
+                                <div class="caption mt-1">{{ userInfo.email }}</div>
                                 <div class="mt-3">
-                                    <v-btn color="primary " text outlined rounded router to="/profile">
-                                        <v-icon> mdi-emoticon-happy-outline</v-icon>
+                                    <v-btn color="primary " elevation="1" rounded router to="/profile">
+                                        <v-icon> mdi-account-outline</v-icon>
                                         <span class="text-capitalize ml-2"> view profile </span>
                                     </v-btn>
                                 </div>
 
                                 <div class="my-4">
-                                    <v-btn color="error" text outlined rounded @click="signOut">
+                                    <v-btn color="error" elevation="1" rounded @click="signOut">
                                         <v-icon> mdi-location-exit </v-icon>
                                         <span class="text-capitalize ml-2"> sign out </span>
                                     </v-btn>
@@ -73,7 +74,7 @@
             <v-layout column text-center>
                 <v-flex class="mt-5">
                     <v-avatar size="100">
-                        <v-img :src='userInfo.profilePic' alt="" />
+                        <v-img :src="userInfo.profilePic" alt="" />
                     </v-avatar>
                     <p class="subheading mt-4">{{ userInfo.name }}</p>
                 </v-flex>
@@ -90,15 +91,22 @@
                     </template>
                     <v-list>
                         <v-list-item>
-                            <v-list-item-title><EventForm icon="mdi-calendar-edit" name="Event" /></v-list-item-title>
-                        </v-list-item>
-                        <v-list-item>
                             <v-list-item-title
-                                ><TaskForm icon="mdi-checkbox-marked-circle-outline" name="Task"
+                                ><EventForm icon="mdi-calendar-edit" name="Event" @refreshCalendar="refreshCalendar"
                             /></v-list-item-title>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title><ReminderForm icon="mdi-reminder" name="Reminder" /></v-list-item-title>
+                            <v-list-item-title
+                                ><TaskForm
+                                    icon="mdi-checkbox-marked-circle-outline"
+                                    name="Task"
+                                    @refreshCalendar="refreshCalendar"
+                            /></v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-list-item-title
+                                ><ReminderForm icon="mdi-reminder" name="Reminder" @refreshCalendar="refreshCalendar"
+                            /></v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -118,27 +126,6 @@
                 </v-list-item-group>
                 <!-- <v-list-item> -->
             </v-list>
-            <div class="ml-4">
-                <v-checkbox
-                    v-model="filterEvent"
-                    label="Event"
-                    class="primary-text ma-0 p-0"
-                    color="primary "
-                ></v-checkbox>
-                <v-checkbox v-model="filterTask" label="Task" class="success-text ma-0" color="success "></v-checkbox>
-                <v-checkbox
-                    v-model="filterReminder"
-                    label="Reminder"
-                    class="orange-text ma-0"
-                    color="orange "
-                ></v-checkbox>
-                <v-checkbox
-                    v-model="filterHoliday"
-                    label="Holiday"
-                    class="purple-text ma-0"
-                    color="purple "
-                ></v-checkbox>
-            </div>
         </v-navigation-drawer>
         <v-tooltip left color="grey">
             <template v-slot:activator="{ on, attrs }">
@@ -176,7 +163,7 @@
                         v-bind="attrs"
                         v-on="on"
                     >
-                        <ReminderForm icon="mdi-reminder" />
+                        <ReminderForm icon="mdi-reminder" @refreshCalendar="refreshCalendar" />
                     </v-btn>
                 </transition>
             </template>
@@ -197,7 +184,7 @@
                         v-bind="attrs"
                         v-on="on"
                     >
-                        <TaskForm icon="mdi-checkbox-marked-circle-outline" />
+                        <TaskForm icon="mdi-checkbox-marked-circle-outline" @refreshCalendar="refreshCalendar" />
                     </v-btn>
                 </transition>
             </template>
@@ -217,7 +204,7 @@
                         v-bind="attrs"
                         v-on="on"
                     >
-                        <EventForm icon="mdi-calendar-edit" />
+                        <EventForm icon="mdi-calendar-edit" @refreshCalendar="refreshCalendar" />
                     </v-btn>
                 </transition>
             </template>
@@ -234,7 +221,7 @@ import EventForm from '@/components/EventForm';
 import TaskForm from '@/components/TaskForm';
 import ReminderForm from '@/components/ReminderForm';
 import ChangeProfile from '@/components/ChangeProfile';
-import {mapGetters} from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'NavBar',
     components: { EventForm, TaskForm, ReminderForm, ChangeProfile },
@@ -248,8 +235,7 @@ export default {
             filterReminder: false,
             filterHoliday: false,
             speeddial: false,
-            date:new Date(),
-           
+            date: new Date(),
 
             links: [
                 { icon: 'calendar-month-outline', text: 'Calendar', route: '/calendar' },
@@ -260,11 +246,9 @@ export default {
 
     computed: {
         ...mapGetters(['userDetails']),
-        userInfo(){ 
-            if(this.userDetails)
-                  return this.userDetails
-
-           return ''
+        userInfo() {
+            if (this.userDetails) return this.userDetails;
+            return '';
         },
         menuIcon() {
             if (!this.drawer) return 'mdi-menu';
@@ -283,17 +267,24 @@ export default {
             }
         },
     },
-    created() {},
+    async mounted() {
+        if (!this.userDetails) await this.getUserDetails();
+    },
     methods: {
+        ...mapActions(['getUserDetails', 'getAllUsers']),
         menu() {
             this.drawer = !this.drawer;
         },
-        changeProfile() {
-            console.log('this');
-        },
         signOut() {
-            localStorage.clear();
-            this.$router.push('/auth');
+            this.spinner = this.$loading.show(this.$spinner);
+            setTimeout(() => {
+                localStorage.clear();
+                this.$router.replace('/auth');
+                this.spinner.hide();
+            }, 1000);
+        },
+        refreshCalendar() {
+            this.$emit('refreshCalendar');
         },
     },
 };
@@ -372,5 +363,4 @@ export default {
         transform: scale(1);
     }
 }
-
 </style>

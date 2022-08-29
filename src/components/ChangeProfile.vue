@@ -51,7 +51,7 @@
                                         </template>
 
                                         <v-card>
-                                            <v-card-title class="text-h5  lighten-2">
+                                            <v-card-title class="text-h5 lighten-2">
                                                 Change profile picture
                                             </v-card-title>
 
@@ -127,22 +127,23 @@ export default {
     computed: {
         ...mapGetters(['userDetails']),
         userInfo() {
-            if(this.userDetails)
-                 return this.userDetails;
-            return ''
+            if (this.userDetails) return this.userDetails;
+            return '';
         },
     },
     methods: {
-        ...mapActions(['loader']),
+        ...mapActions(['getUserDetails']),
         uploadImage(event) {
             this.file = event;
             console.log(event);
         },
         async submit() {
+            this.spinner = this.$loading.show(this.$spinner);
             const response = await uploadProfile(this.file);
             console.log(response);
-            await this.loader();
+            await this.getUserDetails();
             this.changeDialog = false;
+            this.spinner.hide();
         },
     },
 };

@@ -1,16 +1,16 @@
 <template>
     <div class="calendar">
-        <NavBar />
+        <NavBar @refreshCalendar="loadCalendar" />
 
         <v-row class="fill-height side-padding">
             <v-col>
                 <v-sheet height="64">
                     <v-toolbar flat>
-                        <v-btn outlined class="mr-4" color="primary" @click="setToday"> Today </v-btn>
-                        <v-btn fab text small color="primary" @click="prev">
+                        <v-btn outlined class="mr-4" @click="setToday"> Today </v-btn>
+                        <v-btn fab text small @click="prev">
                             <v-icon small> mdi-chevron-left </v-icon>
                         </v-btn>
-                        <v-btn fab text small color="primary" @click="next">
+                        <v-btn fab text small @click="next">
                             <v-icon small> mdi-chevron-right </v-icon>
                         </v-btn>
                         <v-toolbar-title v-if="$refs.calendar">
@@ -19,27 +19,26 @@
                         <v-spacer></v-spacer>
                         <v-menu bottom right>
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn outlined color="primary" v-bind="attrs" v-on="on">
+                                <v-btn outlined v-bind="attrs" v-on="on">
                                     <span>{{ typeToLabel[type] }}</span>
                                     <v-icon right> mdi-menu-down </v-icon>
                                 </v-btn>
                             </template>
-                           
-                                <v-list>
-                                    <v-list-item @click="type = 'day'">
-                                        <v-list-item-title>Day</v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item @click="type = 'week'">
-                                        <v-list-item-title>Week</v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item @click="type = 'month'">
-                                        <v-list-item-title>Month</v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item @click="type = '4day'">
-                                        <v-list-item-title>4 days</v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                           
+
+                            <v-list>
+                                <v-list-item @click="type = 'day'">
+                                    <v-list-item-title>Day</v-list-item-title>
+                                </v-list-item>
+                                <v-list-item @click="type = 'week'">
+                                    <v-list-item-title>Week</v-list-item-title>
+                                </v-list-item>
+                                <v-list-item @click="type = 'month'">
+                                    <v-list-item-title>Month</v-list-item-title>
+                                </v-list-item>
+                                <v-list-item @click="type = '4day'">
+                                    <v-list-item-title>4 days</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
                         </v-menu>
                     </v-toolbar>
                 </v-sheet>
@@ -96,7 +95,6 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { getAllEvents } from '@/services/event.services';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -123,41 +121,28 @@ export default {
             selectedElement: null,
             selectedOpen: false,
             events: [],
+
             dialog: false,
             names: ['sachin', 'sameer', 'NItish'],
             colors: ['primary', 'success'],
-
-            // this will store all the events
         };
     },
-    created() {},
     mounted() {
-        this.loadCalender();
+        this.loadCalendar();
     },
     computed: {
-        ...mapGetters(['userDetails']),
+        ...mapGetters(['userDetails', 'allEvents']),
     },
+
     methods: {
-        ...mapActions(['getUserDetails', 'getAllUsers']),
+        ...mapActions(['getUserDetails', 'getAllUsers', 'getAllEvents']),
 
-        async loadCalender() {
+        async loadCalendar() {
             this.spinner = this.$loading.show(this.$spinner);
-            if (!this.userDetails) this.getUserDetails();
-            const response = await getAllEvents();
-
-            let events = [];
-            response.events.forEach((event) => {
-                event.start = '';
-                event.end = '';
-                event.start = event.startDate.substr(0, 10);
-                event.end = event.endDate ? event.endDate.substr(0, 10) : event.start;
-
-                events.push(event);
-            });
-            // console.log(events);
-
-            this.events = this.updateRange(events);
-            //console.log(this.events);
+            if (!this.userDetails) await this.getUserDetails();
+            await this.getAllEvents();
+            this.events = this.updateRange(this.allEvents);
+         //   console.log(this.events);
             this.getAllUsers();
             this.spinner.hide();
         },
@@ -186,7 +171,7 @@ export default {
         showEvent({ nativeEvent, event }) {
             const open = () => {
                 this.selectedEvent = event;
-                console.log(this.selectedEvent);
+               // console.log(this.selectedEvent);
                 this.selectedElement = nativeEvent.target;
                 requestAnimationFrame(() => requestAnimationFrame(() => (this.selectedOpen = true)));
             };
@@ -235,7 +220,13 @@ export default {
 
 <style scoped>
 .side-padding {
-    margin-left: 3%;
-    margin-right: 3%;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+@media all and (max-width: 700px){
+    .side-padding {
+    margin-left: 1%;
+    margin-right: 1%;
+}
 }
 </style>

@@ -200,9 +200,10 @@ export default {
                 } else {
                     this.$toast.error('Something error Happended');
                     console.log(response);
+                    this.spinner.hide();
                 }
                 this.$refs.form2.reset();
-                this.spinner.hide();
+                this.spinner.hide(); 
             }
         },
     },

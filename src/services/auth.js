@@ -32,4 +32,5 @@ const login = async (userDetails) => {
     }
 };
 
-export { login, register };
+
+export { login, register, };

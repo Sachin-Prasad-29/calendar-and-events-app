@@ -95,8 +95,9 @@
                                     <v-autocomplete
                                         v-model="attendee"
                                         :items="people"
+                                        dense
                                         chips
-                                        color="blue-grey lighten-2"
+                                        color="black"
                                         label="Add Attendees"
                                         item-text="email"
                                         item-value="email"
@@ -166,11 +167,18 @@
                                     ></v-textarea>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-btn rounded outlined color="success" @click="submit" left>
+                                    <v-btn rounded elevation="1" color="success" @click="submit" left>
                                         <v-icon>mdi-plus-circle</v-icon>
                                         <span class="text-capitalize px-2">Add</span>
                                     </v-btn>
-                                    <v-btn rounded outlined color="orange" class="ml-3" @click="reset" left>
+                                    <v-btn
+                                        rounded
+                                        elevation="1"
+                                        color="white--text orange"
+                                        class="ml-3"
+                                        @click="reset"
+                                        left
+                                    >
                                         <v-icon> mdi-refresh-circle </v-icon>
                                         <span class="text-capitalize px-2" right>Reset</span>
                                     </v-btn>
@@ -186,7 +194,7 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'EventForm',
@@ -224,6 +232,7 @@ export default {
         },
     },
     methods: {
+        ...mapActions(['getAllEvents']),
         async submit() {
             if (this.$refs.form.validate()) {
                 this.spinner = this.$loading.show(this.$spinner);
@@ -252,13 +261,15 @@ export default {
 
                 if (response.success) {
                     this.$toast.success('Event Added Successfully');
-                    console.log(response);
+                    //  console.log(response);
 
                     this.dialog = false;
                 } else {
                     console.log(response);
                     this.$toast.error('Opps ! Something went wrong.');
                 }
+                await this.getAllEvents();
+                this.$emit('refreshCalendar');
                 this.$refs.form.reset();
                 this.spinner.hide();
             }
@@ -270,8 +281,8 @@ export default {
             const index = this.attendee.indexOf(item.email);
             if (index >= 0) this.attendee.splice(index, 1);
         },
-        setEndDate(event) {
-            console.log(event);
+        setEndDate() {
+            // console.log(event);
             this.endDate = this.startDate;
             this.menu1 = false;
         },

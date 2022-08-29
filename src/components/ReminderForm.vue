@@ -73,11 +73,11 @@
                                 </v-col>
 
                                 <v-col cols="12">
-                                    <v-btn rounded outlined class="mt-4" color="success" @click="submit" left>
+                                    <v-btn rounded elevation="1"  class="mt-4 " color="success" @click="submit" left>
                                         <v-icon>mdi-plus-circle</v-icon>
                                         <span class="text-capitalize px-2">Add</span>
                                     </v-btn>
-                                    <v-btn rounded outlined color="orange" class="ml-3 mt-4" @click="reset" left>
+                                    <v-btn rounded elevation="1" color="orange" class="ml-3 mt-4 white--text" @click="reset" left>
                                         <v-icon> mdi-refresh-circle </v-icon>
                                         <span class="text-capitalize px-2" right>Reset</span>
                                     </v-btn>
@@ -137,10 +137,11 @@ export default {
                     //console.log(response);
                     this.dialog = false;
                 } else {
-                    //console.log(response);
+                    console.log(response);
                     this.$toast.error('Opps ! Something went wrong.');
                 }
             }
+            this.$emit('refreshCalendar');
             this.$refs.form.reset();
             this.spinner.hide();
         },
