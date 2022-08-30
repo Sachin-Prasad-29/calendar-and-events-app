@@ -1,6 +1,6 @@
 <template>
     <div class="event">
-        <NavBar />
+        <NavBar @refreshCalendar="loadEvent(1)" />
         <v-container class="text-center">
             <v-row class="justify-center">
                 <v-col cols="1" md="1" sm="1" xs="3">
@@ -125,15 +125,14 @@
         <v-btn elevation="3" fab x-small class="v-btn--insc" @click="descPage">
             <v-icon>mdi-chevron-down </v-icon>
         </v-btn>
-        <v-container class="">
+
+        <v-container class="card">
             <v-row class="align-center mt-5 pa-5" v-show="noEvent">
                 <v-col cols="12" class="text-center mt-1">
-                    
+                    <v-avatar class="avatar" size="310" tile>
+                        <v-img class="not-found" src="@/assets/images/Search.svg"></v-img>
+                    </v-avatar>
 
-                        <v-avatar class="avatar" size="250" tile>
-                            <v-img class="not-found" src="@/assets/images/noEventfound-2.svg"></v-img>
-                        </v-avatar>
-                    
                     <br />
                     <br />
                     <div class="text-h5 mb-2 blue-grey--text text-lighten-4">No Result Found !</div>
@@ -142,38 +141,113 @@
 
             <v-card
                 elevation="1"
+                tile
                 outlined
-                class="pt-1 px-4 justify-space-between d-flex"
+                class="px-4 justify-space-between d-flex"
                 v-for="event in allEvents"
+                :class="event.category"
                 :key="event._id"
             >
-                <!-- <v-row class="align-center justify-space-around"> -->
-                <v-card elevation="0" class="">
-                    <v-btn fab text elevation="0" small color="primary"
-                        ><span class="text-h5">{{ event.startDate.substring(8, 10) }}</span></v-btn
-                    >
-                    <span class="caption ml-1">{{ month[parseInt(event.startDate.substring(5, 7)) - 1] }}, </span>
-                    <span class="caption mr-5 ml-1">{{ event.startDate.substring(0, 4) }} </span>
-                    <v-avatar size="25" :class="event.color" class="mb-1"> </v-avatar>
-                    <span class="ml-5 mr-3"
-                        >{{ event.startTime.hours > 9 ? '' : 0 }}{{ event.startTime.hours }} :
-                        {{ event.startTime.minutes > 9 ? '' : 0 }}{{ event.startTime.minutes }}
-                    </span>
-                    <span class="ml-5">{{ event.name }}</span>
-                </v-card>
+                <v-row class="justify-space-between">
+                    <v-col cols="12" md="4" sm="4" xs="12">
+                        <v-card elevation="0" class="mt-1">
+                            <v-btn fab text elevation="0" small color="primary"
+                                ><span class="text-h5">{{ event.startDate.substring(8, 10) }}</span></v-btn
+                            >
+                            <span class="caption ml-1"
+                                >{{ month[parseInt(event.startDate.substring(5, 7)) - 1] }},
+                            </span>
+                            <span class="caption mr-5 ml-1">{{ event.startDate.substring(0, 4) }} </span>
+                            <v-avatar size="25" :class="event.color" class=""> </v-avatar>
+                            <span class="ml-5 mr-3"
+                                >{{ event.startTime.hours > 9 ? '' : 0 }}{{ event.startTime.hours }} :
+                                {{ event.startTime.minutes > 9 ? '' : 0 }}{{ event.startTime.minutes }}
+                            </span>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12" md="4" sm="4" xs="12" class="mt-2">
+                        <span class="">{{ event.name }}</span>
+                    </v-col>
+                    <!-- view button -->
+                    <v-spacer></v-spacer>
+                    <v-col cols="12" md="3" sm="4" xs="12">
+                        <v-card elevation="0" class="">
+                            <v-tooltip left>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        x-small
+                                        fab
+                                        elevation="0"
+                                        color=" success"
+                                        class="ma-2"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <ViewEvent :event='event'/>
+                                    </v-btn>
+                                </template>
+                                <span>Left tooltip</span>
+                            </v-tooltip>
 
-                <v-card elevation="0" class="">
-                    <v-btn x-small fab elevation="0" color=" success" class="ma-1">
-                        <v-icon small>mdi-eye-outline</v-icon>
-                    </v-btn>
-                    <v-btn x-small fab elevation="0" color=" primary" class="ma-1">
-                        <v-icon small>mdi-pencil-outline</v-icon>
-                    </v-btn>
-                    <v-btn x-small fab elevation="0" color="error" class="ma-1">
-                        <v-icon small>mdi-delete-outline</v-icon>
-                    </v-btn>
-                </v-card>
-                <!-- </v-row> -->
+                            <!-- edit button -->
+
+                            <v-tooltip left>
+                                <template v-slot:activator="{ on, attrs }"
+                                    ><v-btn
+                                        x-small
+                                        fab
+                                        elevation="0"
+                                        color=" primary"
+                                        class="ma-2"
+                                        :disabled="event.createdBy !== userEmail"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        ><EditEvent :event='event'/>
+                                    </v-btn>
+                                </template>
+                                <span>Left tooltip</span>
+                            </v-tooltip>
+
+                            <!-- excuse button -->
+                            <v-tooltip right>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        x-small
+                                        fab
+                                        elevation="0"
+                                        color="error"
+                                        class="ma-2"
+                                        :disabled="event.createdBy === userEmail"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                       <ExcuseEvent :event='event'/>
+                                    </v-btn>
+                                </template>
+                                <span>Left tooltip</span>
+                            </v-tooltip>
+
+                            <!-- delete button -->
+                            <v-tooltip left>
+                                <template v-slot:activator="{ on, attrs }"
+                                    ><v-btn
+                                        x-small
+                                        fab
+                                        elevation="0"
+                                        color="error"
+                                        class="am-2"
+                                        :disabled="event.createdBy !== userEmail"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <DeleteEvent :event='event'/>
+                                    </v-btn>
+                                </template>
+                                <span>Left tooltip</span>
+                            </v-tooltip>
+                        </v-card>
+                    </v-col>
+                </v-row>
             </v-card>
         </v-container>
     </div>
@@ -181,11 +255,16 @@
 
 <script>
 import NavBar from '@/components/NavBar';
+import EditEvent from '@/components/EditEvent';
+import ViewEvent from '@/components/ViewEvent';
+import DeleteEvent from '@/components/DeleteEvent'
+import ExcuseEvent from '@/components/ExcuseEvent';
 import { getEvents } from '@/services/event.services';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'EventPage',
-    components: { NavBar },
+    components: { NavBar, EditEvent, ViewEvent,DeleteEvent,ExcuseEvent },
     data() {
         return {
             page: 1,
@@ -207,7 +286,13 @@ export default {
             noEvent: false,
         };
     },
-    computed: {},
+    computed: {
+        ...mapGetters(['userDetails']),
+        userEmail() {
+            if (this.userDetails) return this.userDetails.email;
+            return '';
+        },
+    },
     created() {
         this.loadEvent();
     },
@@ -236,8 +321,7 @@ export default {
             if (response.success) {
                 if (response.events.length === 0) {
                     this.noEvent = true;
-                }else
-                   this.noEvent= false
+                } else this.noEvent = false;
             } else {
                 console.log(response);
             }
@@ -291,5 +375,17 @@ export default {
     z-index: 1000;
 
     margin: 10px 0;
+}
+.event-card {
+    border: 1px solid black;
+}
+.card .event {
+    border-left: 4px solid #4285f4;
+}
+.card .task {
+    border-left: 4px solid #0f9d58;
+}
+.card .reminder {
+    border-left: 4px solid orange;
 }
 </style>

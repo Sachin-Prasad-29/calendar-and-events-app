@@ -5,7 +5,6 @@ import CalendarPage from '@/views/CalendarPage';
 import ProfilePage from '@/views/ProfilePage';
 import EventPage from '@/views/EventPage';
 import LandingPage from '@/views/LandingPage';
-import UploadImg from '@/views/UploadImg';
 import PageNotFound from '@/views/PageNotFound';
 
 Vue.use(VueRouter);
@@ -51,14 +50,7 @@ const routes = [
             auth: true,
         },
     },
-    {
-        path: '/upload',
-        name: 'upload',
-        component: UploadImg,
-        meta: {
-            auth: true,
-        },
-    },
+
     {
         name: 'page-not-found',
         path: '*',
@@ -71,6 +63,7 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes,
 });
+
 router.beforeEach((to, from, next) => {
     if (to.meta.auth && !localStorage.getItem('token')) {
         next('*');

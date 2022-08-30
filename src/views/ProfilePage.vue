@@ -158,7 +158,6 @@ export default {
         profilePic() {
             if (this.userDetails) return this.userDetails.profilePic;
             return '';
-            
         },
     },
     created() {
@@ -191,9 +190,13 @@ export default {
                 gender: this.gender,
             };
             const response = await editUserProfile(profileDetails);
-            console.log(response);
-            await this.getUserDetails();
-            this.user = this.userDetails;
+            if (response.success) {
+                await this.getUserDetails();
+                this.user = this.userDetails;
+                this.$toast.success('Profile Updated Successfully');
+            } else {
+                this.$toast.error('Oops ! Someting Error happened ');
+            }
             this.edit = false;
             setTimeout(() => {
                 this.spinner.hide();
