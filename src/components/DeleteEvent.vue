@@ -5,22 +5,28 @@
                 <v-icon v-bind="attrs" v-on="on">mdi-delete-outline</v-icon>
             </template>
 
-            <v-card >
+            <v-card>
                 <v-list>
                     <v-layout column text-center>
                         <v-flex class="">
                             <v-avatar size="200">
-                                <v-img src="@/assets/images/deleteLogo.svg" ></v-img>
+                                <v-img src="@/assets/images/deleteLogo.svg"></v-img>
                             </v-avatar>
 
-                            <div class="text-h6 ">You are about to delete an Item</div>
+                            <div class="text-h6">You are about to delete an Item</div>
                             <div class="caption mt-1 mb-4">This will delete your Item from catalog are you sure ?</div>
                             <div class="mb-2">
                                 <v-btn rounded elevation="1" color="error" class="mr-2" @click="deleteEvent">
                                     <v-icon>mdi-delete-outline</v-icon>
                                     <span class="text-capitalize ml-1"> Delete</span>
                                 </v-btn>
-                                <v-btn rounded elevation="1" color="grey white--text" @click="dialog = false" class=" ml-2">
+                                <v-btn
+                                    rounded
+                                    elevation="1"
+                                    color="grey white--text"
+                                    @click="dialog = false"
+                                    class="ml-2"
+                                >
                                     <v-icon>mdi-close-circle-outline</v-icon>
                                     <span class="text-capitalize ml-1">Cancel</span>
                                 </v-btn>
@@ -36,19 +42,32 @@
 </template>
 
 <script>
+import { deleteEvent } from '@/services/event.services';
 export default {
     name: 'DeleteEvent',
-    props:['event'],
-    data(){
+    props: ['event'],
+    data() {
         return {
-            dialog:false
-        }
+            dialog: false,
+        };
     },
-    methods:{
-        deleteEvent(){
-            console.log('delete event')
-        }
-    }
+    methods: {
+        async deleteEvent() {
+            this.spinner = this.$loading.show(this.$spinner);
+            const eventId = this.event._id;
+            const response = await deleteEvent(eventId);
+            if (response.success) {
+                console.log(response);
+                this.$toast.success('Item Deleted Successfully');
+            } else {
+                console.log(response);
+                this.$toast.error('Opps ! Something went wrong');
+            }
+            this.dialog = false;
+            this.$emit('refreshEvent');
+            this.spinner.hide();
+        },
+    },
 };
 </script>
 

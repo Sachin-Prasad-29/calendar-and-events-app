@@ -140,8 +140,14 @@ export default {
         async submit() {
             this.spinner = this.$loading.show(this.$spinner);
             const response = await uploadProfile(this.file);
-            console.log(response);
-            await this.getUserDetails();
+            if (response.success) {
+                this.$toast.success('Profile picture changes Successfully');
+                await this.getUserDetails();
+            } else {
+                this.$toast.error('Oops ! Something error happened');
+                console.log(response);
+            }
+
             this.changeDialog = false;
             this.spinner.hide();
         },

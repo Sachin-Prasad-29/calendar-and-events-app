@@ -16,7 +16,7 @@
                             <div class="text-h6 mt-5">You are about to left an Event</div>
                             <div class="caption mt-1 mb-4">This will remove you from event, are you sure ?</div>
                             <div class="mb-2">
-                                <v-btn rounded elevation="1" color="error" class="mr-2" @click="excuse">
+                                <v-btn rounded elevation="1" color="error" class="mr-2" @click="excuseEvent">
                                     <v-icon>mdi-location-exit</v-icon>
                                     <span class="text-capitalize ml-1">Excuse</span>
                                 </v-btn>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import {excuseEvent} from '@/services/event.services'
+
 export default {
     name: 'ExcuseEvent',
     props: ['event'],
@@ -51,8 +53,21 @@ export default {
         };
     },
     methods: {
-        excuse() {
-            console.log('Excused');
+        async excuseEvent() {
+            this.spinner = this.$loading.show(this.$spinner);
+            const eventId = this.event._id;
+            const eventDetails = this.event;
+            const response = await excuseEvent(eventId,eventDetails);
+            if (response.success) {
+                console.log(response);
+                this.$toast.success('Succesfully Left the Event');
+            } else {
+                console.log(response);
+                this.$toast.error('Opps ! Something went wrong');
+            }
+            this.dialog = false;
+            this.$emit('refreshEvent');
+            this.spinner.hide();
         },
     },
 };

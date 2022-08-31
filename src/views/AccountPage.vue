@@ -171,7 +171,6 @@ export default {
                 };
 
                 const response = await login(userDetails);
-                console.log(response);
                 if (response.success) {
                     this.$toast.success('Sign in Successful');
                     localStorage.setItem('token', response.token);

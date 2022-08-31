@@ -14,7 +14,8 @@ import 'animate.css';
 // import {baseURL} from '@/config'
 
 // Axios.defaults.baseURL = baseURL;
-Axios.defaults.baseURL = 'http://localhost:5001/api/';
+//Axios.defaults.baseURL = 'http://localhost:5001/api/';
+Axios.defaults.baseURL = 'https://calendar-and-events.herokuapp.com/api/';
 Vue.config.productionTip = false;
 
 Vue.prototype.$spinner = {

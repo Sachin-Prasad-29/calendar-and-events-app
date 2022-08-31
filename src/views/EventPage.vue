@@ -144,7 +144,7 @@
                 tile
                 outlined
                 class="px-4 justify-space-between d-flex"
-                v-for="event in allEvents"
+                v-for="event in events"
                 :class="event.category"
                 :key="event._id"
             >
@@ -160,8 +160,15 @@
                             <span class="caption mr-5 ml-1">{{ event.startDate.substring(0, 4) }} </span>
                             <v-avatar size="25" :class="event.color" class=""> </v-avatar>
                             <span class="ml-5 mr-3"
-                                >{{ event.startTime.hours > 9 ? '' : 0 }}{{ event.startTime.hours }} :
+                                >{{
+                                    event.startTime.hours % 12 !== 0
+                                        ? event.startTime.hours % 12 === 10
+                                            ? ''
+                                            : 0
+                                        : ''
+                                }}{{ event.startTime.hours % 12 === 0 ? 12 : event.startTime.hours % 12 }} :
                                 {{ event.startTime.minutes > 9 ? '' : 0 }}{{ event.startTime.minutes }}
+                                {{ event.startTime.hours > 11 ? 'PM' : 'AM' }}
                             </span>
                         </v-card>
                     </v-col>
@@ -172,7 +179,7 @@
                     <v-spacer></v-spacer>
                     <v-col cols="12" md="3" sm="4" xs="12">
                         <v-card elevation="0" class="">
-                            <v-tooltip left>
+                            <v-tooltip top color="success">
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn
                                         x-small
@@ -183,15 +190,15 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <ViewEvent :event='event'/>
+                                        <ViewEvent :event="event" />
                                     </v-btn>
                                 </template>
-                                <span>Left tooltip</span>
+                                <span>View {{ event.category }}</span>
                             </v-tooltip>
 
                             <!-- edit button -->
 
-                            <v-tooltip left>
+                            <v-tooltip top color="primary">
                                 <template v-slot:activator="{ on, attrs }"
                                     ><v-btn
                                         x-small
@@ -202,14 +209,14 @@
                                         :disabled="event.createdBy !== userEmail"
                                         v-bind="attrs"
                                         v-on="on"
-                                        ><EditEvent :event='event'/>
+                                        ><EditEvent :event="event" @refreshEvent="loadEvent()" />
                                     </v-btn>
                                 </template>
-                                <span>Left tooltip</span>
+                                <span>Edit {{ event.category }}</span>
                             </v-tooltip>
 
                             <!-- excuse button -->
-                            <v-tooltip right>
+                            <v-tooltip top color="error">
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn
                                         x-small
@@ -221,14 +228,14 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                       <ExcuseEvent :event='event'/>
+                                        <ExcuseEvent :event="event" @refreshEvent="loadEvent()" />
                                     </v-btn>
                                 </template>
-                                <span>Left tooltip</span>
+                                <span>Excuse {{ event.category }}</span>
                             </v-tooltip>
 
                             <!-- delete button -->
-                            <v-tooltip left>
+                            <v-tooltip top color="error">
                                 <template v-slot:activator="{ on, attrs }"
                                     ><v-btn
                                         x-small
@@ -240,10 +247,10 @@
                                         v-bind="attrs"
                                         v-on="on"
                                     >
-                                        <DeleteEvent :event='event'/>
+                                        <DeleteEvent :event="event" @refreshEvent="loadEvent()" />
                                     </v-btn>
                                 </template>
-                                <span>Left tooltip</span>
+                                <span>Delete {{ event.category }}</span>
                             </v-tooltip>
                         </v-card>
                     </v-col>
@@ -257,14 +264,14 @@
 import NavBar from '@/components/NavBar';
 import EditEvent from '@/components/EditEvent';
 import ViewEvent from '@/components/ViewEvent';
-import DeleteEvent from '@/components/DeleteEvent'
+import DeleteEvent from '@/components/DeleteEvent';
 import ExcuseEvent from '@/components/ExcuseEvent';
 import { getEvents } from '@/services/event.services';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'EventPage',
-    components: { NavBar, EditEvent, ViewEvent,DeleteEvent,ExcuseEvent },
+    components: { NavBar, EditEvent, ViewEvent, DeleteEvent, ExcuseEvent },
     data() {
         return {
             page: 1,
@@ -292,12 +299,16 @@ export default {
             if (this.userDetails) return this.userDetails.email;
             return '';
         },
+        events() {
+            return this.allEvents;
+        },
     },
     created() {
         this.loadEvent();
     },
 
     methods: {
+        ...mapActions(['getAllUsers']),
         getColor(event) {
             if (event === 'event') return 'error';
             if (event === 'reminder') return 'orange';
@@ -325,6 +336,7 @@ export default {
             } else {
                 console.log(response);
             }
+            await this.getAllUsers();
             this.spinner.hide();
             this.allEvents = response.events;
         },

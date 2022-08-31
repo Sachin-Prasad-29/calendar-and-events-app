@@ -1,24 +1,25 @@
 <template>
     <div class="nav">
         <v-app-bar dense flat outlined color="">
-            <v-app-bar-nav-icon @click="menu" left>
+            <v-app-bar-nav-icon @click="menu" left class="menu-Icon">
                 <v-icon> {{ menuIcon }}</v-icon>
             </v-app-bar-nav-icon>
 
-            <v-toolbar-title class="mr-1" left>
+            <v-toolbar-title class="mr-1 time-title" left>
                 <router-link to="/calendar">
                     <v-img max-height="35" max-width="45" src="@/assets/images/icon3.svg"></v-img>
                 </router-link>
             </v-toolbar-title>
             <v-toolbar-title>
                 <router-link to="/calendar" class="font-weight-bold text-h5 text-decoration-none">
-                    <span class="ct--text">Calendar</span>
+                    <span class="ct--text "  >Calendar</span>
                 </router-link>
             </v-toolbar-title>
 
             <!-- drop down menu -->
             <v-spacer></v-spacer>
-            <h4 class="mr-4 mt-1 ct--text">{{ date | date }}</h4>
+            <v-spacer></v-spacer>
+            <h4 class="mr-4 mt-1 ct--text time-title">{{ date | date }}</h4>
             <v-menu
                 :nudge-width="220"
                 transition="slide-y-transition"
@@ -363,4 +364,12 @@ export default {
         transform: scale(1);
     }
 }
+@media all and (max-width:600px) {
+
+    .time-title{
+        visibility: hidden;
+     width: 0;
+
+}
+    }
 </style>
