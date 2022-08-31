@@ -20,7 +20,7 @@
                 <v-row class="align-center mr-auto mt-7">
                     <v-col cols="12" md="7" sm="6" xs="12" class="mr-auto">
                         <div class="maintitle left-align success--text">Make the most of every day</div>
-                        <div class="subtitle left-align">
+                        <div class="subtitle left-align ct--text">
                             The Calendar app helps you spend less time managing your schedule and more time enjoying it.
                         </div>
                     </v-col>
@@ -40,7 +40,7 @@
                     <v-spacer></v-spacer>
                     <v-col cols="12" md="7" sm="6" xs="12" class="order-xs-first "
                         ><div class="maintitle right-align primary--text">Create Event with Your Friends</div>
-                        <div class="subtitle right-align">
+                        <div class="subtitle right-align ct--text">
                             When you create an event like a Party, Vacation, Meeting or Dinner, it will be added to your
                             calendar automatically.
                         </div></v-col
@@ -52,7 +52,7 @@
                 <v-row class="align-center mr-auto mt-5">
                     <v-col cols="12" md="7" sm="6" xs="12"
                         ><div class="maintitle left-align success--text">Build in Todo List</div>
-                        <div class="subtitle left-align">
+                        <div class="subtitle left-align ct--text">
                             Take Advantage of build in todo list inside your Calender, to manage and keep track of your
                             daily work
                         </div></v-col
@@ -73,7 +73,7 @@
                     <v-spacer></v-spacer>
                     <v-col cols="12" md="7" sm="6" xs="12" class="order-xs-first "
                         ><div class="maintitle right-align primary--text">Fill in your calendar, quickly and easily</div>
-                        <div class="subtitle right-align">
+                        <div class="subtitle right-align ct--text">
                             With Assists, Calendar helps you create events, Tasks and Reminder, in just a few taps with
                             event titles, people and places
                         </div></v-col
@@ -113,7 +113,7 @@
                     </a>
                 </v-card-text>
 
-                <div class="ma-1">Have any Question ? or Want to Report any Bug ?</div>
+                <div class="ma-1 white--text">Have any Question ? or Want to Report any Bug ?</div>
                 <div class="ma-1">
                     Drop us a line at -<a href="mailto:sachin.kprasad09@gmail.com" class="link-text">
                         sachin.kprasad09@gmail.com</a
