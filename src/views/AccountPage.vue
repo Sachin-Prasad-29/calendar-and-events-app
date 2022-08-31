@@ -38,7 +38,7 @@
                                 >Sign in</v-btn
                             >
 
-                            <v-switch v-model="$vuetify.theme.dark" inset color="black" right class="ma-5"></v-switch>
+
                         </div>
                     </v-form>
                     <v-form action="#" class="sign-up-form" ref="form2" v-model="signupValid" lazy-validation>
@@ -79,8 +79,9 @@
                             <v-text-field
                                 outlined
                                 rounded
+                                type="password"
                                 v-model="confirmPassword"
-                                label="Password"
+                                label="Confirm Password"
                                 prepend-inner-icon="mdi-lock-outline"
                                 @click:append="show = !show"
                                 :rules="confirmRules"
