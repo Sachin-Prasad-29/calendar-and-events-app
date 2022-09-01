@@ -37,11 +37,42 @@
                                 @click="onLogin"
                                 >Sign in</v-btn
                             >
-
-
                         </div>
                     </v-form>
                     <v-form action="#" class="sign-up-form" ref="form2" v-model="signupValid" lazy-validation>
+                        <v-dialog v-model="dialog" width="500">
+                            <v-card>
+                                <v-card-actions fixed class="justify-space-between mx-0 my-0">
+                                    <v-spacer></v-spacer>
+                                    <v-card-title class="text-h5 text-capitalize">Verify your Email </v-card-title>
+                                    <v-spacer></v-spacer>
+                                </v-card-actions>
+
+                                <v-card-text>
+                                    <v-alert border="top" color="green" dense icon="mdi-account" outlined prominent
+                                        >We've sent a verification code to your email to {{ signupEmail }}.
+                                        <div>Please enter the OTP below to validate your Email Address.</div></v-alert
+                                    >
+                                </v-card-text>
+                                <v-text-field
+                                    v-model="otp"
+                                    outlined
+                                    label="One Time Password"
+                                    type="number"
+                                    color="green"
+                                    class="mx-6"
+                                >
+                                </v-text-field>
+
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="success" class="px-5 mb-5 text-capitalize" @click="validateUser">
+                                        Validate OTP
+                                    </v-btn>
+                                    <v-spacer></v-spacer>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                         <div class="text-center">
                             <h1 class="mb-4">Sign up</h1>
                             <v-text-field
@@ -122,13 +153,15 @@
 </template>
 
 <script>
-import { login, register } from '@/services/auth';
+import { login, register, validate } from '@/services/auth';
 import { mapActions } from 'vuex';
 
 export default {
     name: 'AccountPage',
+
     data() {
         return {
+            dialog: false,
             login: true,
             show: false,
             signinValid: true,
@@ -139,6 +172,7 @@ export default {
             signupEmail: '',
             signupPassword: '',
             confirmPassword: '',
+            otp: '',
             nameRules: [(v) => !!v || 'Username is required'],
             emailRules: [(v) => !!v || 'E-mail is required', (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid'],
             passwordRules: [
@@ -187,7 +221,6 @@ export default {
         },
         async onRegister() {
             if (this.$refs.form2.validate()) {
-                this.spinner = this.$loading.show(this.$spinner);
                 const userDetails = {
                     email: this.signupEmail,
                     password: this.signupPassword,
@@ -195,16 +228,36 @@ export default {
                 };
                 const response = await register(userDetails);
                 if (response.success) {
-                    this.$toast.success('Sign up Successful');
-                    this.login = true;
+                    //console.log(response);
+                    this.$toast.success('OTP sended on given Email..');
+                    this.dialog = true;
                 } else {
-                    this.$toast.error('Something error Happended');
+                    this.$toast.error(response.msg);
                     console.log(response);
-                    this.spinner.hide();
                 }
-                this.$refs.form2.reset();
-                this.spinner.hide(); 
             }
+        },
+
+        async validateUser() {
+            this.spinner = this.$loading.show(this.$spinner);
+            const userDetails = {
+                email: this.signupEmail,
+                password: this.signupPassword,
+                name: this.name,
+                otp: this.otp,
+            };
+
+            const response = await validate(userDetails);
+            if (response.success) {
+               // console.log(response);
+                this.$toast.success('Sign up successfully');
+            } else {
+                this.$toast.error('Something error Happended');
+                console.log(response);
+            }
+            this.dialog = false;
+            this.login = true;
+            this.spinner.hide();
         },
     },
 };
