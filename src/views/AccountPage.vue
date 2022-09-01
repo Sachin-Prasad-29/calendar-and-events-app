@@ -5,7 +5,7 @@
                 <div class="signin-signup">
                     <v-form action="#" class="sign-in-form" ref="form1" v-model="signinValid" lazy-validation>
                         <div class="text-center">
-                            <h1 class="mb-4" right>Sign in</h1>
+                            <h1 class="mb-4 ct--text" right>Sign in</h1>
                             <v-text-field
                                 outlined
                                 rounded
@@ -44,7 +44,9 @@
                             <v-card>
                                 <v-card-actions fixed class="justify-space-between mx-0 my-0">
                                     <v-spacer></v-spacer>
-                                    <v-card-title class="text-h5 text-capitalize">Verify your Email </v-card-title>
+                                    <v-card-title class="text-capitalize ct--text font-big"
+                                        >Verify your Email
+                                    </v-card-title>
                                     <v-spacer></v-spacer>
                                 </v-card-actions>
 
@@ -74,7 +76,7 @@
                             </v-card>
                         </v-dialog>
                         <div class="text-center">
-                            <h1 class="mb-4">Sign up</h1>
+                            <h1 class="mb-4 ct--text">Sign up</h1>
                             <v-text-field
                                 outlined
                                 rounded
@@ -249,7 +251,7 @@ export default {
 
             const response = await validate(userDetails);
             if (response.success) {
-               // console.log(response);
+                // console.log(response);
                 this.$toast.success('Sign up successfully');
             } else {
                 this.$toast.error('Something error Happended');
@@ -265,4 +267,7 @@ export default {
 
 <style scoped>
 @import '@/assets/css/account.css';
+.font-big {
+    font-size: 25px;
+}
 </style>
