@@ -12,7 +12,7 @@
             </v-toolbar-title>
             <v-toolbar-title>
                 <router-link to="/calendar" class="font-weight-bold text-h5 text-decoration-none">
-                    <span class="ct--text "  >Calendar</span>
+                    <span class="ct--text">Calendar</span>
                 </router-link>
             </v-toolbar-title>
 
@@ -364,12 +364,10 @@ export default {
         transform: scale(1);
     }
 }
-@media all and (max-width:600px) {
-
-    .time-title{
+@media all and (max-width: 600px) {
+    .time-title {
         visibility: hidden;
-     width: 0;
-
-}
+        width: 0;
     }
+}
 </style>

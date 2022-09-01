@@ -66,10 +66,14 @@
                         <v-card elevation="0" outlined color="" min-width="350px">
                             <v-toolbar dense flat :color="selectedEvent.color" dark>
                                 <v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
-                                <span class="text-h7 ml-2 mt-1"> {{ selectedEvent.startDate | date }}</span>
+                                <span class="text-h7 ml-2 mt-1"><span class="caption">on</span> {{ selectedEvent.startDate | date }}</span>
                                 <v-spacer></v-spacer>
                             </v-toolbar>
                             <v-card-text>
+                                <div>
+                                    <span class="font-weight-bold">Created by : </span> {{ selectedEvent.createdBy }}
+                                </div>
+
                                 <span>{{ selectedEvent.details }}</span>
                                 <v-spacer></v-spacer>
                             </v-card-text>
@@ -77,8 +81,8 @@
                                 <v-btn
                                     small
                                     outlined
-                                    text
-                                    color="red"
+                                    elevation="0"
+                                    color="error"
                                     @click="selectedOpen = false"
                                     class="text-capitalize"
                                 >
@@ -142,7 +146,7 @@ export default {
             if (!this.userDetails) await this.getUserDetails();
             await this.getAllEvents();
             this.events = this.updateRange(this.allEvents);
-         //   console.log(this.events);
+            //   console.log(this.events);
             this.getAllUsers();
             this.spinner.hide();
         },
@@ -171,7 +175,7 @@ export default {
         showEvent({ nativeEvent, event }) {
             const open = () => {
                 this.selectedEvent = event;
-               // console.log(this.selectedEvent);
+                // console.log(this.selectedEvent);
                 this.selectedElement = nativeEvent.target;
                 requestAnimationFrame(() => requestAnimationFrame(() => (this.selectedOpen = true)));
             };
@@ -223,10 +227,10 @@ export default {
     margin-left: 4%;
     margin-right: 4%;
 }
-@media all and (max-width: 700px){
+@media all and (max-width: 700px) {
     .side-padding {
-    margin-left: 1%;
-    margin-right: 1%;
-}
+        margin-left: 1%;
+        margin-right: 1%;
+    }
 }
 </style>

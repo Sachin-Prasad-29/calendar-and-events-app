@@ -13,7 +13,7 @@
                                 <v-img src="@/assets/images/deleteLogo.svg"></v-img>
                             </v-avatar>
 
-                            <div class="text-h6">You are about to delete an Item</div>
+                            <div >You are about to delete an Item</div>
                             <div class="caption mt-1 mb-4">This will delete your Item from catalog are you sure ?</div>
                             <div class="mb-2">
                                 <v-btn rounded elevation="1" color="error" class="mr-2" @click="deleteEvent">

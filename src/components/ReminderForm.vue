@@ -9,7 +9,7 @@
             </template>
             <v-card class="ma-0">
                 <v-card-actions fixed class="justify-space-between mx-0 my-0">
-                    <v-card-title class="text-h4">Reminder</v-card-title>
+                    <v-card-title class="big-text ct--text">Reminder</v-card-title>
                     <v-btn text large fab @click="dialog = false" class="red--text">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
