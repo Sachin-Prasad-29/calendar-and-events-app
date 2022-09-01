@@ -11,10 +11,18 @@ import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import 'animate.css';
 
+<<<<<<< HEAD
 import { baseURL } from '@/config';
 
 Axios.defaults.baseURL = baseURL;
 
+=======
+import {baseURL} from '@/config'
+
+ Axios.defaults.baseURL = baseURL;
+// Axios.defaults.baseURL = 'http://localhost:5001/api/';
+// // Axios.defaults.baseURL = 'https://calendar-and-events.herokuapp.com/api/';
+>>>>>>> 886ec7f1a80e988e987f7fbae1424a00d76569df
 Vue.config.productionTip = false;
 
 Vue.prototype.$spinner = {
