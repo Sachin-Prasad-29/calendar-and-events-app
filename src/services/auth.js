@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//service method to register this method will generate the otp
 const register = async (userDetails) => {
     const reqData = {
         method: 'post',
@@ -8,14 +9,13 @@ const register = async (userDetails) => {
     };
     try {
         const response = await axios(reqData);
-        console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log(error.response.data);
         return error.response.data;
     }
 };
 
+//service to login the user and get token for validation
 const login = async (userDetails) => {
     const reqData = {
         method: 'post',
@@ -24,14 +24,13 @@ const login = async (userDetails) => {
     };
     try {
         const response = await axios(reqData);
-        // console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
         return error.response;
     }
 };
 
+//service method which will check otp entered by user duing the registration process
 const validate = async (userDetails) => {
     const reqData = {
         method: 'post',
@@ -40,12 +39,11 @@ const validate = async (userDetails) => {
     };
     try {
         const response = await axios(reqData);
-        // console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
         return error.response;
     }
+    
 };
 
 export { login, register, validate };

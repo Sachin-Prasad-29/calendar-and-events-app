@@ -9,25 +9,16 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import dateFilter from '@/filters/date';
 import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
-import 'animate.css';
 
-<<<<<<< HEAD
+// setting up the axios 
 import { baseURL } from '@/config';
-
 Axios.defaults.baseURL = baseURL;
 
-=======
-import {baseURL} from '@/config'
-
- Axios.defaults.baseURL = baseURL;
-// Axios.defaults.baseURL = 'http://localhost:5001/api/';
-// // Axios.defaults.baseURL = 'https://calendar-and-events.herokuapp.com/api/';
->>>>>>> 886ec7f1a80e988e987f7fbae1424a00d76569df
 Vue.config.productionTip = false;
 
 Vue.prototype.$spinner = {
     color: 'rgb(51, 102, 255)',
-    backgroundColor: 'white',
+    backgroundColor: 'grey',
     blur: '9px',
     height: 100,
     width: 100,

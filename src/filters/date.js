@@ -1,3 +1,5 @@
+// filter to edit the date format
+
 import format from 'date-fns/format';
 
 function dateFilter( isoDateString, dateFormat = 'standard' ) {

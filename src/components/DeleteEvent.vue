@@ -13,7 +13,7 @@
                                 <v-img src="@/assets/images/deleteLogo.svg"></v-img>
                             </v-avatar>
 
-                            <div >You are about to delete an Item</div>
+                            <div>You are about to delete an Item</div>
                             <div class="caption mt-1 mb-4">This will delete your Item from catalog are you sure ?</div>
                             <div class="mb-2">
                                 <v-btn rounded elevation="1" color="error" class="mr-2" @click="deleteEvent">
@@ -43,6 +43,7 @@
 
 <script>
 import { deleteEvent } from '@/services/event.services';
+import { mapGetters } from 'vuex'
 export default {
     name: 'DeleteEvent',
     props: ['event'],
@@ -51,13 +52,16 @@ export default {
             dialog: false,
         };
     },
+    computed: {
+        ...mapGetters(['token'])
+    },
     methods: {
+        //method to delete the event
         async deleteEvent() {
             this.spinner = this.$loading.show(this.$spinner);
             const eventId = this.event._id;
-            const response = await deleteEvent(eventId);
+            const response = await deleteEvent(eventId, this.token);
             if (response.success) {
-                console.log(response);
                 this.$toast.success('Item Deleted Successfully');
             } else {
                 console.log(response);
@@ -71,4 +75,3 @@ export default {
 };
 </script>
 
-<style></style>

@@ -1,26 +1,25 @@
 import axios from 'axios';
 
-const editUserProfile = async (profileDetails) => {
+//service method to edit the profile of the user
+const editUserProfile = async (profileDetails, token) => {
     const reqData = {
         method: 'patch',
         url: `auth/profile`,
         headers: {
-            Authorization: localStorage.getItem('token'),
-            'Content-Type': 'application/json',
+            Authorization: token,
         },
         data: profileDetails,
     };
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
         return error.response.data;
     }
 };
 
-const uploadProfile = async (data) => {
+//service method to upload and change the profile of the user
+const uploadProfile = async (data, token) => {
     let formData = new FormData();
     formData.append('photo', data);
     const reqData = {
@@ -28,16 +27,14 @@ const uploadProfile = async (data) => {
         url: `auth/profilepic`,
         headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: localStorage.getItem('token'),
+            Authorization: token,
         },
         data: formData,
     };
     try {
         const response = await axios(reqData);
-        console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log(error.response.data);
         return error.response.data;
     }
 };

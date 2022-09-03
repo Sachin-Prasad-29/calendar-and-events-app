@@ -115,31 +115,33 @@ import { uploadProfile } from '@/services/profile.services';
 import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'ChangeProfile',
+
     data() {
         return {
             dialog: false,
             changeDialog: false,
             file: null,
-
             rules: [(value) => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!'],
         };
     },
+
     computed: {
-        ...mapGetters(['userDetails']),
+        ...mapGetters(['userDetails','token']),
         userInfo() {
             if (this.userDetails) return this.userDetails;
             return '';
         },
     },
+
     methods: {
         ...mapActions(['getUserDetails']),
+        //method to upload the profile picture
         uploadImage(event) {
             this.file = event;
-            console.log(event);
         },
         async submit() {
             this.spinner = this.$loading.show(this.$spinner);
-            const response = await uploadProfile(this.file);
+            const response = await uploadProfile(this.file,this.token);
             if (response.success) {
                 this.$toast.success('Profile picture changes Successfully');
                 await this.getUserDetails();
@@ -155,4 +157,3 @@ export default {
 };
 </script>
 
-<style></style>

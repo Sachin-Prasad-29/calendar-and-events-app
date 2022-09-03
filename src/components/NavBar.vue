@@ -246,7 +246,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['userDetails']),
+        ...mapGetters(['userDetails', 'token']),
         userInfo() {
             if (this.userDetails) return this.userDetails;
             return '';
@@ -255,27 +255,18 @@ export default {
             if (!this.drawer) return 'mdi-menu';
             return 'mdi-close';
         },
-        activeFab() {
-            switch (this.tabs) {
-                case 'one':
-                    return { color: 'success', icon: 'mdi-share-variant' };
-                case 'two':
-                    return { color: 'red', icon: 'mdi-pencil' };
-                case 'three':
-                    return { color: 'green', icon: 'mdi-chevron-up' };
-                default:
-                    return {};
-            }
-        },
     },
     async mounted() {
         if (!this.userDetails) await this.getUserDetails();
     },
     methods: {
         ...mapActions(['getUserDetails', 'getAllUsers']),
+        //method to open and close the menu
         menu() {
             this.drawer = !this.drawer;
         },
+        
+        //method to sign out from the app
         signOut() {
             this.spinner = this.$loading.show(this.$spinner);
             setTimeout(() => {
@@ -284,6 +275,7 @@ export default {
                 this.spinner.hide();
             }, 1000);
         },
+        // this method will emit one method which will refresh the calendar page
         refreshCalendar() {
             this.$emit('refreshCalendar');
         },

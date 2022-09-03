@@ -192,6 +192,7 @@ export default {
         };
     },
     computed: {
+        
         event() {
             if (!this.login) return 'sign-up-mode';
             return '';
@@ -214,7 +215,7 @@ export default {
                     await this.getUserDetails();
                     this.$router.push('/calendar');
                 } else {
-                    this.$toast.error('Someting error happended');
+                    this.$toast.error(response.data);
                     console.log(response);
                 }
                 this.$refs.form1.reset();
@@ -230,7 +231,6 @@ export default {
                 };
                 const response = await register(userDetails);
                 if (response.success) {
-                    //console.log(response);
                     this.$toast.success('OTP sended on given Email..');
                     this.dialog = true;
                 } else {
@@ -251,7 +251,6 @@ export default {
 
             const response = await validate(userDetails);
             if (response.success) {
-                // console.log(response);
                 this.$toast.success('Sign up successfully');
             } else {
                 this.$toast.error('Something error Happended');

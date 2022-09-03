@@ -66,7 +66,9 @@
                         <v-card elevation="0" outlined color="" min-width="350px">
                             <v-toolbar dense flat :color="selectedEvent.color" dark>
                                 <v-toolbar-title>{{ selectedEvent.name }}</v-toolbar-title>
-                                <span class="text-h7 ml-2 mt-1"><span class="caption">on</span> {{ selectedEvent.startDate | date }}</span>
+                                <span class="text-h7 ml-2 mt-1"
+                                    ><span class="caption">on</span> {{ selectedEvent.startDate | date }}</span
+                                >
                                 <v-spacer></v-spacer>
                             </v-toolbar>
                             <v-card-text>
@@ -135,7 +137,7 @@ export default {
         this.loadCalendar();
     },
     computed: {
-        ...mapGetters(['userDetails', 'allEvents']),
+        ...mapGetters(['userDetails', 'allEvents', 'token']),
     },
 
     methods: {
@@ -146,7 +148,6 @@ export default {
             if (!this.userDetails) await this.getUserDetails();
             await this.getAllEvents();
             this.events = this.updateRange(this.allEvents);
-            //   console.log(this.events);
             this.getAllUsers();
             this.spinner.hide();
         },
@@ -175,7 +176,6 @@ export default {
         showEvent({ nativeEvent, event }) {
             const open = () => {
                 this.selectedEvent = event;
-                // console.log(this.selectedEvent);
                 this.selectedElement = nativeEvent.target;
                 requestAnimationFrame(() => requestAnimationFrame(() => (this.selectedOpen = true)));
             };
@@ -191,7 +191,6 @@ export default {
         },
         updateRange(events) {
             for (let i = 0; i < events.length; i++) {
-                //console.log(events[i]);
                 const startDate = events[i].start;
                 let endDate;
                 let endTimeMin;

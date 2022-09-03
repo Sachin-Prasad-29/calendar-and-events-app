@@ -10,12 +10,14 @@ export default new Vuex.Store({
         userDetails: null,
         allUsers: [],
         allEvents: [],
+        token: localStorage.getItem('token'),
     },
 
     getters: {
         userDetails: (state) => state.userDetails,
         allUsers: (state) => state.allUsers,
         allEvents: (state) => state.allEvents,
+        token: (state) => state.token,
     },
 
     mutations: {
@@ -31,15 +33,18 @@ export default new Vuex.Store({
     },
 
     actions: {
+        //action method to get user details
         async getUserDetails({ commit }) {
-            const userDetails = await getUserDetails();
+            const userDetails = await getUserDetails(this.getters.token);
             if (!userDetails.profilePic) {
                 userDetails.profilePic = '@/assets/images/noPic.png';
             }
             commit('setUserDetails', userDetails);
         },
+
+        // action method to get all the users
         async getAllUsers({ commit }) {
-            let allUsers = await getAllUsers();
+            let allUsers = await getAllUsers(this.getters.token);
 
             for (let i = 0; i < allUsers.length; i++) {
                 if (this.state.userDetails.email === allUsers[i].email) {
@@ -49,9 +54,10 @@ export default new Vuex.Store({
             }
             commit('setAllUsers', allUsers);
         },
+        
+        //action mehod to get all the event of logged in user
         async getAllEvents({ commit }) {
-            
-            const response = await getAllEvents();
+            const response = await getAllEvents(this.getters.token);
             if (response.success) {
                 let events = [];
                 response.events.forEach((event) => {
@@ -68,6 +74,4 @@ export default new Vuex.Store({
             }
         },
     },
-
-    modules: {},
 });

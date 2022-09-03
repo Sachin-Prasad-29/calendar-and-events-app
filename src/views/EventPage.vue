@@ -294,7 +294,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['userDetails']),
+        ...mapGetters(['userDetails','token']),
         userEmail() {
             if (this.userDetails) return this.userDetails.email;
             return '';
@@ -327,8 +327,8 @@ export default {
             if (this.category) this.category = this.category.toLowerCase();
 
             const params = `page=${this.page}&name=${this.title}&category=${this.category}&createdOn=${this.createdOn}&startDate=${this.startDate}&completed=${this.completed}&keyword=${this.keyword}&createdBy=${this.createdBy}`;
-            //console.log(params);
-            const response = await getEvents(params);
+            
+            const response = await getEvents(params,this.token);
             if (response.success) {
                 if (response.events.length === 0) {
                     this.noEvent = true;

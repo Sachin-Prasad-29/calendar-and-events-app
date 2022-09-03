@@ -73,11 +73,18 @@
                                 </v-col>
 
                                 <v-col cols="12">
-                                    <v-btn rounded elevation="1"  class="mt-4 " color="success" @click="submit" left>
+                                    <v-btn rounded elevation="1" class="mt-4" color="success" @click="submit" left>
                                         <v-icon>mdi-plus-circle</v-icon>
                                         <span class="text-capitalize px-2">Add</span>
                                     </v-btn>
-                                    <v-btn rounded elevation="1" color="orange" class="ml-3 mt-4 white--text" @click="reset" left>
+                                    <v-btn
+                                        rounded
+                                        elevation="1"
+                                        color="orange"
+                                        class="ml-3 mt-4 white--text"
+                                        @click="reset"
+                                        left
+                                    >
                                         <v-icon> mdi-refresh-circle </v-icon>
                                         <span class="text-capitalize px-2" right>Reset</span>
                                     </v-btn>
@@ -93,6 +100,7 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
+import { mapGetters } from 'vuex';
 export default {
     name: 'ReminderForm',
     props: ['icon', 'name'],
@@ -113,11 +121,14 @@ export default {
             startTimeRule: [(v) => !!v || 'Start Time is required'],
         };
     },
+    computed: {
+        ...mapGetters(['token']),
+    },
     methods: {
+        // method to submit the reminder form
         async submit() {
             if (this.$refs.form.validate()) {
                 this.spinner = this.$loading.show(this.$spinner);
-
                 const eventDetails = {
                     name: this.title,
                     startDate: this.startDate,
@@ -131,10 +142,9 @@ export default {
                     notification: this.notification,
                     notifyBefore: this.notifyBefore,
                 };
-                const response = await addEvent(eventDetails);
+                const response = await addEvent(eventDetails, this.token);
                 if (response.success) {
                     this.$toast.success('Reminder Added Successfully');
-                    //console.log(response);
                     this.dialog = false;
                 } else {
                     console.log(response);
@@ -145,6 +155,7 @@ export default {
             this.$refs.form.reset();
             this.spinner.hide();
         },
+        // method to reset the reminder form
         reset() {
             this.$refs.form.reset();
             this.notification = true;

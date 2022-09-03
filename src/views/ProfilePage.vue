@@ -154,7 +154,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['userDetails']),
+        ...mapGetters(['userDetails','token']),
         profilePic() {
             if (this.userDetails) return this.userDetails.profilePic;
             return '';

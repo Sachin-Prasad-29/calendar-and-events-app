@@ -1,116 +1,106 @@
 import axios from 'axios';
 
-const getAllEvents = async () => {
+//service method to get all the event for the logged in user
+const getAllEvents = async (token) => {
     const reqData = {
         method: 'get',
         url: `events`,
         headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization: token,
         },
     };
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        // console.log(error.response.data);
         return error.response.data;
     }
 };
 
-const getEvents = async (params) => {
+// service method  which give max 10 events for pagination and support filteration 
+const getEvents = async (params, token) => {
     const reqData = {
         method: 'get',
         url: `events/filter?${params}`,
         headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization: token,
         },
     };
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
         return error.response.data;
     }
 };
-const addEvent = async (eventDetails) => {
+
+// service method to add a event
+const addEvent = async (eventDetails, token) => {
     const reqData = {
         method: 'post',
         url: `events`,
         headers: {
-            Authorization: localStorage.getItem('token'),
-            'Content-Type': 'application/json',
+            Authorization: token,
         },
         data: eventDetails,
     };
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
         return error.response.data;
     }
 };
 
-const editEvent = async (eventId, eventDetails) => {
+//servie method to edit the event
+const editEvent = async (eventId, eventDetails, token) => {
     const reqData = {
         method: 'patch',
         url: `events/${eventId}`,
         headers: {
-            Authorization: localStorage.getItem('token'),
-            'Content-Type': 'application/json',
+            Authorization: token,
         },
         data: eventDetails,
     };
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
         return error.response.data;
     }
 };
 
-const excuseEvent = async (eventId, eventDetails ) => {
+//service method to excuse the event
+const excuseEvent = async (eventId, eventDetails, token) => {
     const reqData = {
         method: 'patch',
         url: `events/${eventId}/excuse`,
         headers: {
-            Authorization: localStorage.getItem('token'),
-            'Content-Type': 'application/json',
+            Authorization: token,
         },
         data: eventDetails,
     };
-    console.log(reqData);
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
         return error.response.data;
     }
 };
 
-const deleteEvent = async (eventId) => {
+//service method to delete a event
+const deleteEvent = async (eventId, token) => {
     const reqData = {
         method: 'delete',
         url: `events/${eventId}`,
         headers: {
-            Authorization: localStorage.getItem('token'),
-            'Content-Type': 'application/json',
+            Authorization: token,
         },
     };
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        //console.log(error.response.data);
         return error.response.data;
     }
 };

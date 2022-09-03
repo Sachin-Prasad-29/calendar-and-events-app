@@ -226,13 +226,14 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['allUsers', 'userDetails']),
+        ...mapGetters(['allUsers', 'userDetails','token']),
         people() {
             return this.allUsers;
         },
     },
     methods: {
         ...mapActions(['getAllEvents']),
+        //method to submit the add event form
         async submit() {
             if (this.$refs.form.validate()) {
                 this.spinner = this.$loading.show(this.$spinner);
@@ -257,12 +258,10 @@ export default {
                     details: this.description,
                 };
 
-                const response = await addEvent(eventDetails);
+                const response = await addEvent(eventDetails,this.token);
 
                 if (response.success) {
                     this.$toast.success('Event Added Successfully');
-                    //  console.log(response);
-
                     this.dialog = false;
                 } else {
                     console.log(response);
@@ -282,7 +281,6 @@ export default {
             if (index >= 0) this.attendee.splice(index, 1);
         },
         setEndDate() {
-            // console.log(event);
             this.endDate = this.startDate;
             this.menu1 = false;
         },

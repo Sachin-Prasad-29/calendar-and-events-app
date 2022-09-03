@@ -80,17 +80,20 @@ export default {
         };
     },
     computed: {
+        //computed property to get correct format of endDate if its present
         endDate() {
             if (this.event.endDate) {
                 return ` - ${format(new Date(this.event.endDate), 'MMM d, yyyy')}`;
             }
             return '';
         },
+        //conputed property to get the correct format of endTime if its presnt using time filter
         endTime() {
             const endTime = getTime(this.event.endTime);
             if (endTime) return `- ${endTime}`;
             return '';
         },
+        //computed property to get the correct format of the statTime using time filter
         startTime() {
             return getTime(this.event.startTime);
         },

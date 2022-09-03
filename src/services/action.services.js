@@ -1,37 +1,35 @@
 import axios from 'axios';
 
-const getUserDetails = async () => {
+// services to fetch logged in user details 
+const getUserDetails = async (token) => {
     const reqData = {
         method: 'get',
         url: `auth/profile`,
         headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization: token,
         },
     };
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        // console.log(error.response.data);
         return error.response.data;
     }
 };
 
-const getAllUsers = async () => {
+//services to get all the user details
+const getAllUsers = async (token) => {
     const reqData = {
         method: 'get',
         url: `auth/users`,
         headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization: token,
         },
     };
     try {
         const response = await axios(reqData);
-        //console.log(response.data);
         return response.data;
     } catch (error) {
-        // console.log(error.response.data);
         return error.response.data;
     }
 };

@@ -96,7 +96,14 @@
                                         <v-icon>mdi-plus-circle</v-icon>
                                         <span class="text-capitalize px-2">Add</span>
                                     </v-btn>
-                                    <v-btn rounded elevation="1" color="orange" class="white--text ml-3" @click="reset" left>
+                                    <v-btn
+                                        rounded
+                                        elevation="1"
+                                        color="orange"
+                                        class="white--text ml-3"
+                                        @click="reset"
+                                        left
+                                    >
                                         <v-icon> mdi-refresh-circle </v-icon>
                                         <span class="text-capitalize px-2" right>Reset</span>
                                     </v-btn>
@@ -112,6 +119,7 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'TaskForm',
@@ -135,7 +143,11 @@ export default {
             startTimeRule: [(v) => !!v || 'Start Time is required'],
         };
     },
+    computed: {
+        ...mapGetters(['token']),
+    },
     methods: {
+        //method to add task from task form 
         async submit() {
             if (this.$refs.form.validate()) {
                 this.spinner = this.$loading.show(this.$spinner);
@@ -154,11 +166,10 @@ export default {
                     details: this.description,
                 };
 
-                const response = await addEvent(eventDetails);
+                const response = await addEvent(eventDetails, this.token);
 
                 if (response.success) {
                     this.$toast.success('Task Added Successfully');
-                    //console.log(response);
                     this.dialog = false;
                 } else {
                     console.log(response);
@@ -169,12 +180,9 @@ export default {
                 this.spinner.hide();
             }
         },
+        //method to reset the form 
         reset() {
             this.$refs.form.reset();
-        },
-        remove(item) {
-            const index = this.attendee.indexOf(item.name);
-            if (index >= 0) this.attendee.splice(index, 1);
         },
     },
 };

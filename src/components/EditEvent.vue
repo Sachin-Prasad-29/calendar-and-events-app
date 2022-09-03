@@ -169,13 +169,13 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['allUsers']),
+        ...mapGetters(['allUsers','token']),
         people() {
             return this.allUsers;
         },
     },
     methods: {
-        
+        //method to edit the event 
         async editEvent() {
             if (this.$refs.form.validate()) {
                 this.spinner = this.$loading.show(this.$spinner);
@@ -204,10 +204,10 @@ export default {
                     };
                 }
 
-                const response = await editEvent(eventId, eventDetails);
+                const response = await editEvent(eventId, eventDetails,this.token);
                 if (response.success) {
                     this.$toast.success('Updated Successfully');
-                    console.log(response);
+                  
                 } else {
                     console.log(response);
                     this.$toast.error('Opps ! Something went wrong');
