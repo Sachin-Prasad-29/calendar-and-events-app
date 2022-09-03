@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 // services to fetch logged in user details 
-const getUserDetails = async (token) => {
+const getUserDetails = async () => {
     const reqData = {
         method: 'get',
         url: `auth/profile`,
         headers: {
-            Authorization: token,
+            Authorization: localStorage.getItem('token'),
         },
     };
     try {
@@ -18,12 +18,12 @@ const getUserDetails = async (token) => {
 };
 
 //services to get all the user details
-const getAllUsers = async (token) => {
+const getAllUsers = async () => {
     const reqData = {
         method: 'get',
         url: `auth/users`,
         headers: {
-            Authorization: token,
+            Authorization: localStorage.getItem('token'),
         },
     };
     try {

@@ -35,7 +35,7 @@ export default new Vuex.Store({
     actions: {
         //action method to get user details
         async getUserDetails({ commit }) {
-            const userDetails = await getUserDetails(this.getters.token);
+            const userDetails = await getUserDetails();
             if (!userDetails.profilePic) {
                 userDetails.profilePic = '@/assets/images/noPic.png';
             }
@@ -44,7 +44,7 @@ export default new Vuex.Store({
 
         // action method to get all the users
         async getAllUsers({ commit }) {
-            let allUsers = await getAllUsers(this.getters.token);
+            let allUsers = await getAllUsers();
 
             for (let i = 0; i < allUsers.length; i++) {
                 if (this.state.userDetails.email === allUsers[i].email) {
@@ -57,7 +57,7 @@ export default new Vuex.Store({
         
         //action mehod to get all the event of logged in user
         async getAllEvents({ commit }) {
-            const response = await getAllEvents(this.getters.token);
+            const response = await getAllEvents();
             if (response.success) {
                 let events = [];
                 response.events.forEach((event) => {

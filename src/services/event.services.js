@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 //service method to get all the event for the logged in user
-const getAllEvents = async (token) => {
+const getAllEvents = async () => {
+    const token = localStorage.getItem('token');
     const reqData = {
         method: 'get',
         url: `events`,
@@ -17,7 +18,7 @@ const getAllEvents = async (token) => {
     }
 };
 
-// service method  which give max 10 events for pagination and support filteration 
+// service method  which give max 10 events for pagination and support filteration
 const getEvents = async (params, token) => {
     const reqData = {
         method: 'get',
