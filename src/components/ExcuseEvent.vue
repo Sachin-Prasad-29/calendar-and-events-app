@@ -43,7 +43,6 @@
 
 <script>
 import { excuseEvent } from '@/services/event.services';
-import { mapGetters } from 'vuex';
 
 export default {
     name: 'ExcuseEvent',
@@ -53,16 +52,14 @@ export default {
             dialog: false,
         };
     },
-    computed:{
-        ...mapGetters(['token'])
-    },
+
     methods: {
         //method to exucse the event
         async excuseEvent() {
             this.spinner = this.$loading.show(this.$spinner);
             const eventId = this.event._id;
             const eventDetails = this.event;
-            const response = await excuseEvent(eventId, eventDetails,this.token);
+            const response = await excuseEvent(eventId, eventDetails);
             if (response.success) {
                 this.$toast.success('Succesfully Left the Event');
             } else {

@@ -126,7 +126,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['userDetails','token']),
+        ...mapGetters(['userDetails']),
         userInfo() {
             if (this.userDetails) return this.userDetails;
             return '';
@@ -141,7 +141,7 @@ export default {
         },
         async submit() {
             this.spinner = this.$loading.show(this.$spinner);
-            const response = await uploadProfile(this.file,this.token);
+            const response = await uploadProfile(this.file);
             if (response.success) {
                 this.$toast.success('Profile picture changes Successfully');
                 await this.getUserDetails();

@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 //service method to edit the profile of the user
-const editUserProfile = async (profileDetails, token) => {
+const editUserProfile = async (profileDetails) => {
+    const token = localStorage.getItem('token');
     const reqData = {
         method: 'patch',
         url: `auth/profile`,
@@ -19,7 +20,8 @@ const editUserProfile = async (profileDetails, token) => {
 };
 
 //service method to upload and change the profile of the user
-const uploadProfile = async (data, token) => {
+const uploadProfile = async (data) => {
+    const token = localStorage.getItem('token');
     let formData = new FormData();
     formData.append('photo', data);
     const reqData = {

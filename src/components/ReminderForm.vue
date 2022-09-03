@@ -100,7 +100,6 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
-import { mapGetters } from 'vuex';
 export default {
     name: 'ReminderForm',
     props: ['icon', 'name'],
@@ -121,9 +120,6 @@ export default {
             startTimeRule: [(v) => !!v || 'Start Time is required'],
         };
     },
-    computed: {
-        ...mapGetters(['token']),
-    },
     methods: {
         // method to submit the reminder form
         async submit() {
@@ -142,7 +138,7 @@ export default {
                     notification: this.notification,
                     notifyBefore: this.notifyBefore,
                 };
-                const response = await addEvent(eventDetails, this.token);
+                const response = await addEvent(eventDetails);
                 if (response.success) {
                     this.$toast.success('Reminder Added Successfully');
                     this.dialog = false;

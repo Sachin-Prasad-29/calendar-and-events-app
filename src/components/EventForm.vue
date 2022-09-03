@@ -226,7 +226,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['allUsers', 'userDetails','token']),
+        ...mapGetters(['allUsers', 'userDetails']),
         people() {
             return this.allUsers;
         },
@@ -258,7 +258,7 @@ export default {
                     details: this.description,
                 };
 
-                const response = await addEvent(eventDetails,this.token);
+                const response = await addEvent(eventDetails);
 
                 if (response.success) {
                     this.$toast.success('Event Added Successfully');

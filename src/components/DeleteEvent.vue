@@ -43,7 +43,7 @@
 
 <script>
 import { deleteEvent } from '@/services/event.services';
-import { mapGetters } from 'vuex'
+
 export default {
     name: 'DeleteEvent',
     props: ['event'],
@@ -52,15 +52,12 @@ export default {
             dialog: false,
         };
     },
-    computed: {
-        ...mapGetters(['token'])
-    },
     methods: {
         //method to delete the event
         async deleteEvent() {
             this.spinner = this.$loading.show(this.$spinner);
             const eventId = this.event._id;
-            const response = await deleteEvent(eventId, this.token);
+            const response = await deleteEvent(eventId);
             if (response.success) {
                 this.$toast.success('Item Deleted Successfully');
             } else {
@@ -74,4 +71,3 @@ export default {
     },
 };
 </script>
-

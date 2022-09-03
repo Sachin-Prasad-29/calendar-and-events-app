@@ -246,7 +246,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['userDetails', 'token']),
+        ...mapGetters(['userDetails']),
         userInfo() {
             if (this.userDetails) return this.userDetails;
             return '';

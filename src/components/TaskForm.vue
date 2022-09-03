@@ -119,7 +119,6 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
-import { mapGetters } from 'vuex';
 
 export default {
     name: 'TaskForm',
@@ -143,9 +142,6 @@ export default {
             startTimeRule: [(v) => !!v || 'Start Time is required'],
         };
     },
-    computed: {
-        ...mapGetters(['token']),
-    },
     methods: {
         //method to add task from task form 
         async submit() {
@@ -166,7 +162,7 @@ export default {
                     details: this.description,
                 };
 
-                const response = await addEvent(eventDetails, this.token);
+                const response = await addEvent(eventDetails);
 
                 if (response.success) {
                     this.$toast.success('Task Added Successfully');

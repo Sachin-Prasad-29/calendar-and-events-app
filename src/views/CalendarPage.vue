@@ -137,7 +137,7 @@ export default {
         this.loadCalendar();
     },
     computed: {
-        ...mapGetters(['userDetails', 'allEvents', 'token']),
+        ...mapGetters(['userDetails', 'allEvents']),
     },
 
     methods: {

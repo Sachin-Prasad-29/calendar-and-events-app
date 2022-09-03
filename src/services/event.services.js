@@ -19,7 +19,8 @@ const getAllEvents = async () => {
 };
 
 // service method  which give max 10 events for pagination and support filteration
-const getEvents = async (params, token) => {
+const getEvents = async (params) => {
+    const token = localStorage.getItem('token');
     const reqData = {
         method: 'get',
         url: `events/filter?${params}`,
@@ -36,7 +37,8 @@ const getEvents = async (params, token) => {
 };
 
 // service method to add a event
-const addEvent = async (eventDetails, token) => {
+const addEvent = async (eventDetails) => {
+    const token = localStorage.getItem('token');
     const reqData = {
         method: 'post',
         url: `events`,
@@ -54,7 +56,8 @@ const addEvent = async (eventDetails, token) => {
 };
 
 //servie method to edit the event
-const editEvent = async (eventId, eventDetails, token) => {
+const editEvent = async (eventId, eventDetails) => {
+    const token = localStorage.getItem('token');
     const reqData = {
         method: 'patch',
         url: `events/${eventId}`,
@@ -72,7 +75,8 @@ const editEvent = async (eventId, eventDetails, token) => {
 };
 
 //service method to excuse the event
-const excuseEvent = async (eventId, eventDetails, token) => {
+const excuseEvent = async (eventId, eventDetails) => {
+    const token = localStorage.getItem('token');
     const reqData = {
         method: 'patch',
         url: `events/${eventId}/excuse`,
@@ -90,7 +94,8 @@ const excuseEvent = async (eventId, eventDetails, token) => {
 };
 
 //service method to delete a event
-const deleteEvent = async (eventId, token) => {
+const deleteEvent = async (eventId) => {
+    const token = localStorage.getItem('token');
     const reqData = {
         method: 'delete',
         url: `events/${eventId}`,

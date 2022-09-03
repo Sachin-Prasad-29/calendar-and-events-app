@@ -10,14 +10,12 @@ export default new Vuex.Store({
         userDetails: null,
         allUsers: [],
         allEvents: [],
-        token: localStorage.getItem('token'),
     },
 
     getters: {
         userDetails: (state) => state.userDetails,
         allUsers: (state) => state.allUsers,
         allEvents: (state) => state.allEvents,
-        token: (state) => state.token,
     },
 
     mutations: {

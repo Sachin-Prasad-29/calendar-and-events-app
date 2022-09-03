@@ -169,7 +169,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['allUsers','token']),
+        ...mapGetters(['allUsers']),
         people() {
             return this.allUsers;
         },
@@ -204,7 +204,7 @@ export default {
                     };
                 }
 
-                const response = await editEvent(eventId, eventDetails,this.token);
+                const response = await editEvent(eventId, eventDetails);
                 if (response.success) {
                     this.$toast.success('Updated Successfully');
                   
