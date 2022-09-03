@@ -59,9 +59,9 @@
                                 <v-text-field
                                     v-model="otp"
                                     outlined
+                                    rounded
                                     label="One Time Password"
                                     type="number"
-                                    color="green"
                                     class="mx-6"
                                 >
                                 </v-text-field>
@@ -119,6 +119,11 @@
                                 @click:append="show = !show"
                                 :rules="confirmRules"
                             ></v-text-field>
+                            <div class="mb-2">
+                                <v-btn v-show="register" x-small color="success" outlined rounded @click="dialog = true"
+                                    >Enter OTP</v-btn
+                                >
+                            </div>
                             <v-btn
                                 rounded
                                 elevation="0"
@@ -166,6 +171,7 @@ export default {
             dialog: false,
             login: true,
             show: false,
+            register: false,
             signinValid: true,
             signupValid: true,
             name: '',
@@ -223,6 +229,7 @@ export default {
         },
         async onRegister() {
             if (this.$refs.form2.validate()) {
+                this.register = true;
                 const userDetails = {
                     email: this.signupEmail,
                     password: this.signupPassword,
@@ -251,14 +258,15 @@ export default {
 
             const response = await validate(userDetails);
             if (response.success) {
-                // console.log(response);
-                this.$toast.success('Sign up successfully');
+                console.log(response);
+                this.$toast.success('Sign up Successful');
+                this.login = true;
             } else {
-                this.$toast.error('Something error Happended');
+                this.$toast.error('response.msg');
                 console.log(response);
             }
             this.dialog = false;
-            this.login = true;
+
             this.spinner.hide();
         },
     },
