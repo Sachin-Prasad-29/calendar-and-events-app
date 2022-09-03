@@ -173,7 +173,7 @@ export default {
             this.gender = this.user.gender;
             this.location = this.user.location;
             this.website = this.user.website;
-            this.birthday = this.user.birthday.substring(0, 10) || '-';
+            this.birthday = this.user.birthday ? this.user.birthday.substring(0, 10) : '';
             this.phone = this.user.phone;
             setTimeout(() => {
                 this.spinner.hide();
