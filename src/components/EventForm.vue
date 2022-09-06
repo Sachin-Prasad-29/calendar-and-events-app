@@ -221,7 +221,10 @@ export default {
             ],
             startDateRule: [(v) => !!v || 'Start Date is required'],
             startTimeRule: [(v) => !!v || 'Start Time is required'],
-            endDateRule: [(v) => !!v || 'End Date is required'],
+            endDateRule: [
+                (v) => !!v || 'End Date is required',
+                (v) => v >= this.startDate || 'End date must be equal or greater than start date',
+            ],
             endTimeRule: [(v) => !!v || 'End Time is required'],
         };
     },
