@@ -5,7 +5,7 @@
                 <v-img max-height="35" max-width="45" src="@/assets/images/icon3.svg"></v-img>
             </v-toolbar-title>
             <v-toolbar-title>
-                <span class="ct--text font-weight-bold">Calendar</span>
+                <span class="ct--text font-weight-bold">Calendar and Events</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <router-link to="/auth">

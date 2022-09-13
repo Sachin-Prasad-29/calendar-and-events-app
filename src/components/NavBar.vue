@@ -10,16 +10,14 @@
                     <v-img max-height="35" max-width="45" src="@/assets/images/icon3.svg"></v-img>
                 </router-link>
             </v-toolbar-title>
-            <v-toolbar-title>
-                <router-link to="/calendar" class="font-weight-bold text-h5 text-decoration-none">
-                    <span class="ct--text">Calendar</span>
-                </router-link>
+            <v-toolbar-title class="font-weight-medium text-h5">
+                <span class="ct--text">{{ this.currPage }}</span>
             </v-toolbar-title>
 
             <!-- drop down menu -->
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
-            <h4 class="mr-4 mt-1 ct--text time-title">{{ date | date }}</h4>
+            <h4 class="mr-4 mt-1 ct--text time-title font-weight-medium">{{ date | date }}</h4>
             <v-menu
                 :nudge-width="220"
                 transition="slide-y-transition"
@@ -226,6 +224,7 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'NavBar',
     components: { EventForm, TaskForm, ReminderForm, ChangeProfile },
+    props: ['currPage'],
     data() {
         return {
             drawer: false,
@@ -240,7 +239,8 @@ export default {
 
             links: [
                 { icon: 'calendar-month-outline', text: 'Calendar', route: '/calendar' },
-                { icon: 'clipboard-check-outline', text: 'All Events', route: '/event' },
+                { icon: 'clipboard-list-outline', text: 'Events', route: '/event' },
+                { icon: 'clipboard-check-outline', text: 'Todo List', route: '/todo' },
             ],
         };
     },
@@ -265,7 +265,7 @@ export default {
         menu() {
             this.drawer = !this.drawer;
         },
-        
+
         //method to sign out from the app
         signOut() {
             this.spinner = this.$loading.show(this.$spinner);

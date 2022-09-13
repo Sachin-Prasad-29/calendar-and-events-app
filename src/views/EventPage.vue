@@ -1,6 +1,6 @@
 <template>
     <div class="event">
-        <NavBar @refreshCalendar="loadEvent(1)" />
+        <NavBar @refreshCalendar="loadEvent(1)" currPage="Events" />
         <v-container class="text-center">
             <v-row class="justify-center">
                 <v-col cols="1" md="1" sm="1" xs="3">
@@ -327,7 +327,7 @@ export default {
             if (this.category) this.category = this.category.toLowerCase();
 
             const params = `page=${this.page}&name=${this.title}&category=${this.category}&createdOn=${this.createdOn}&startDate=${this.startDate}&completed=${this.completed}&keyword=${this.keyword}&createdBy=${this.createdBy}`;
-            
+
             const response = await getEvents(params);
             if (response.success) {
                 if (response.events.length === 0) {
