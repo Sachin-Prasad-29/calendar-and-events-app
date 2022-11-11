@@ -38,6 +38,12 @@
                                 >Sign in</v-btn
                             >
                         </div>
+                        <div>
+                            <br />
+                            <p>Use Sample user to access the Application</p>
+                            <p class="grey--text"><span class="green--text">email:</span> sachin@ex.com</p>
+                            <p class="grey--text"><span class="green--text">password:</span> Test@123</p>
+                        </div>
                     </v-form>
                     <v-form action="#" class="sign-up-form" ref="form2" v-model="signupValid" lazy-validation>
                         <v-dialog v-model="dialog" width="500">
