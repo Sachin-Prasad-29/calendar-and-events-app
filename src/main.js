@@ -9,7 +9,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import dateFilter from '@/filters/date';
 import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
-import 'animate.css';
+
 
 import {baseURL} from '@/config'
 

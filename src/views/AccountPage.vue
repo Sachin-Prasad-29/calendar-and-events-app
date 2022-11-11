@@ -230,6 +230,7 @@ export default {
         async onRegister() {
             if (this.$refs.form2.validate()) {
                 this.register = true;
+                 this.spinner = this.$loading.show(this.$spinner);
                 const userDetails = {
                     email: this.signupEmail,
                     password: this.signupPassword,
@@ -237,13 +238,13 @@ export default {
                 };
                 const response = await register(userDetails);
                 if (response.success) {
-                    //console.log(response);
                     this.$toast.success('OTP sended on given Email..');
                     this.dialog = true;
                 } else {
                     this.$toast.error(response.msg);
                     console.log(response);
                 }
+                 this.spinner.hide();
             }
         },
 
