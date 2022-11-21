@@ -10,16 +10,14 @@
                     <v-img max-height="35" max-width="45" src="@/assets/images/icon3.svg"></v-img>
                 </router-link>
             </v-toolbar-title>
-            <v-toolbar-title>
-                <router-link to="/calendar" class="font-weight-bold text-h5 text-decoration-none">
-                    <span class="ct--text "  >Calendar</span>
-                </router-link>
+            <v-toolbar-title class="font-weight-medium text-h5">
+                <span class="ct--text">{{ this.currPage }}</span>
             </v-toolbar-title>
 
             <!-- drop down menu -->
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
-            <h4 class="mr-4 mt-1 ct--text time-title">{{ date | date }}</h4>
+            <h4 class="mr-4 mt-1 ct--text time-title font-weight-medium">{{ date | date }}</h4>
             <v-menu
                 :nudge-width="220"
                 transition="slide-y-transition"
@@ -226,6 +224,7 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
     name: 'NavBar',
     components: { EventForm, TaskForm, ReminderForm, ChangeProfile },
+    props: ['currPage'],
     data() {
         return {
             drawer: false,
@@ -240,7 +239,8 @@ export default {
 
             links: [
                 { icon: 'calendar-month-outline', text: 'Calendar', route: '/calendar' },
-                { icon: 'clipboard-check-outline', text: 'All Events', route: '/event' },
+                { icon: 'clipboard-list-outline', text: 'Events', route: '/event' },
+                { icon: 'clipboard-check-outline', text: 'Todo List', route: '/todo' },
             ],
         };
     },
@@ -255,27 +255,18 @@ export default {
             if (!this.drawer) return 'mdi-menu';
             return 'mdi-close';
         },
-        activeFab() {
-            switch (this.tabs) {
-                case 'one':
-                    return { color: 'success', icon: 'mdi-share-variant' };
-                case 'two':
-                    return { color: 'red', icon: 'mdi-pencil' };
-                case 'three':
-                    return { color: 'green', icon: 'mdi-chevron-up' };
-                default:
-                    return {};
-            }
-        },
     },
     async mounted() {
         if (!this.userDetails) await this.getUserDetails();
     },
     methods: {
         ...mapActions(['getUserDetails', 'getAllUsers']),
+        //method to open and close the menu
         menu() {
             this.drawer = !this.drawer;
         },
+
+        //method to sign out from the app
         signOut() {
             this.spinner = this.$loading.show(this.$spinner);
             setTimeout(() => {
@@ -284,6 +275,7 @@ export default {
                 this.spinner.hide();
             }, 1000);
         },
+        // this method will emit one method which will refresh the calendar page
         refreshCalendar() {
             this.$emit('refreshCalendar');
         },
@@ -364,12 +356,10 @@ export default {
         transform: scale(1);
     }
 }
-@media all and (max-width:600px) {
-
-    .time-title{
+@media all and (max-width: 600px) {
+    .time-title {
         visibility: hidden;
-     width: 0;
-
-}
+        width: 0;
     }
+}
 </style>

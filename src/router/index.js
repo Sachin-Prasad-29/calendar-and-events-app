@@ -5,6 +5,7 @@ import CalendarPage from '@/views/CalendarPage';
 import ProfilePage from '@/views/ProfilePage';
 import EventPage from '@/views/EventPage';
 import LandingPage from '@/views/LandingPage';
+import TodoPage from '@/views/TodoPage';
 import PageNotFound from '@/views/PageNotFound';
 
 Vue.use(VueRouter);
@@ -50,7 +51,14 @@ const routes = [
             auth: true,
         },
     },
-
+    {
+        path: '/todo',
+        name: 'todo',
+        component: TodoPage,
+        meta: {
+            auth: true,
+        },
+    },
     {
         name: 'page-not-found',
         path: '*',
