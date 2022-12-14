@@ -1,6 +1,6 @@
 <template>
     <div class="calendar">
-        <NavBar @refreshCalendar="loadCalendar" />
+        <NavBar @refreshCalendar="loadCalendar" currPage="Calendar"/>
 
         <v-row class="fill-height side-padding">
             <v-col>

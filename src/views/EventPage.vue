@@ -1,6 +1,6 @@
 <template>
     <div class="event">
-        <NavBar @refreshCalendar="loadEvent(1)" />
+        <NavBar @refreshCalendar="loadEvent(1)" currPage="Events"/>
         <v-container class="text-center">
             <v-row class="justify-center">
                 <v-col cols="1" md="1" sm="1" xs="3">

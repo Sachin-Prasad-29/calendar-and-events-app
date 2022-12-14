@@ -1,6 +1,6 @@
 <template>
     <div class="profile">
-        <NavBar />
+        <NavBar currPage="Profile"/>
         <v-container>
             <v-row>
                 <v-col cols="12" class="text-center mt-1">
