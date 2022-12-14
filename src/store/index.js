@@ -10,7 +10,7 @@ export default new Vuex.Store({
         userDetails: null,
         allUsers: [],
         allEvents: [],
-        isLoading: true,
+        isLoading: false,
     },
 
     getters: {
