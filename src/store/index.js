@@ -10,12 +10,14 @@ export default new Vuex.Store({
         userDetails: null,
         allUsers: [],
         allEvents: [],
+        isLoading: true,
     },
 
     getters: {
         userDetails: (state) => state.userDetails,
         allUsers: (state) => state.allUsers,
         allEvents: (state) => state.allEvents,
+        isLoading: (state) => state.isLoading,
     },
 
     mutations: {
@@ -27,6 +29,9 @@ export default new Vuex.Store({
         },
         setAllEvents(state, allEvents) {
             state.allEvents = allEvents;
+        },
+        setIsLoading(state, isLoading) {
+            state.isLoading = isLoading;
         },
     },
 
@@ -50,7 +55,6 @@ export default new Vuex.Store({
             commit('setAllUsers', allUsers);
         },
         async getAllEvents({ commit }) {
-            
             const response = await getAllEvents();
             if (response.success) {
                 let events = [];

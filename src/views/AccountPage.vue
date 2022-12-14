@@ -167,7 +167,7 @@
 
 <script>
 import { login, register, validate } from '@/services/auth';
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 
 export default {
     name: 'AccountPage',
@@ -211,9 +211,10 @@ export default {
     },
     methods: {
         ...mapActions(['getUserDetails']),
+        ...mapMutations(['setIsLoading']),
         async onLogin() {
             if (this.$refs.form1.validate()) {
-                this.spinner = this.$loading.show(this.$spinner);
+                this.setIsLoading(true);
                 const userDetails = {
                     email: this.signinEmail,
                     password: this.signinPassword,
@@ -230,13 +231,13 @@ export default {
                     console.log(response);
                 }
                 this.$refs.form1.reset();
-                this.spinner.hide();
+                this.setIsLoading(false);
             }
         },
         async onRegister() {
             if (this.$refs.form2.validate()) {
                 this.register = true;
-                 this.spinner = this.$loading.show(this.$spinner);
+                this.setIsLoading(true);
                 const userDetails = {
                     email: this.signupEmail,
                     password: this.signupPassword,
@@ -250,12 +251,12 @@ export default {
                     this.$toast.error(response.msg);
                     console.log(response);
                 }
-                 this.spinner.hide();
+                this.setIsLoading(false);
             }
         },
 
         async validateUser() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true);
             const userDetails = {
                 email: this.signupEmail,
                 password: this.signupPassword,
@@ -274,7 +275,7 @@ export default {
             }
             this.dialog = false;
 
-            this.spinner.hide();
+            this.setIsLoading(false);
         },
     },
 };

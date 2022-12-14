@@ -267,7 +267,7 @@ import ViewEvent from '@/components/ViewEvent';
 import DeleteEvent from '@/components/DeleteEvent';
 import ExcuseEvent from '@/components/ExcuseEvent';
 import { getEvents } from '@/services/event.services';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
     name: 'EventPage',
@@ -309,13 +309,14 @@ export default {
 
     methods: {
         ...mapActions(['getAllUsers']),
+        ...mapMutations(['setIsLoading']),
         getColor(event) {
             if (event === 'event') return 'error';
             if (event === 'reminder') return 'orange';
             return 'primary';
         },
         async loadEvent(p) {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             if (p) this.page = p;
             this.menu = false;
             if (!this.createdOn) this.createdOn = '';
@@ -337,7 +338,7 @@ export default {
                 console.log(response);
             }
             await this.getAllUsers();
-            this.spinner.hide();
+            this.setIsLoading(false)
             this.allEvents = response.events;
         },
         incPage() {

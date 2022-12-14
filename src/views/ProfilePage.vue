@@ -133,7 +133,7 @@
 <script>
 import NavBar from '@/components/NavBar.vue';
 import ChangeProfile from '@/components/ChangeProfile.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { editUserProfile } from '@/services/profile.services';
 
 export default {
@@ -165,8 +165,9 @@ export default {
     },
     methods: {
         ...mapActions(['getUserDetails']),
+        ...mapMutations(['setIsLoading']),
         async loadProfile() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             if (!this.userDetails) await this.getUserDetails();
             this.user = this.userDetails;
             this.name = this.user.name;
@@ -176,11 +177,11 @@ export default {
             this.birthday = this.user.birthday ? this.user.birthday.substring(0, 10) : '';
             this.phone = this.user.phone;
             setTimeout(() => {
-                this.spinner.hide();
-            }, 500);
+                this.setIsLoading(false)
+            }, 1000);
         },
         async submit() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             const profileDetails = {
                 name: this.name,
                 birthday: this.birthday,
@@ -199,8 +200,8 @@ export default {
             }
             this.edit = false;
             setTimeout(() => {
-                this.spinner.hide();
-            }, 500);
+               this.setIsLoading(false)
+            }, 1000);
         },
     },
 };

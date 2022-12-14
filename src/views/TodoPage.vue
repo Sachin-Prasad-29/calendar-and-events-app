@@ -61,6 +61,7 @@
 import NavBar from '@/components/NavBar.vue';
 import TodoItem from '@/components/TodoItem.vue';
 import { getAllTodos, addTodo } from '@/services/todos.services';
+import { mapMutations } from 'vuex';
 export default {
     name: 'TodoPage',
     components: { NavBar, TodoItem },
@@ -75,11 +76,12 @@ export default {
         this.loadTodos();
     },
     methods: {
+        ...mapMutations(['setIsLoading']),
         async loadTodos() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             const response = await getAllTodos();
             this.allTodos = response.todos;
-            this.spinner.hide();
+            this.setIsLoading(false)
         },
         async add() {
             const response = await addTodo({ name: this.name });

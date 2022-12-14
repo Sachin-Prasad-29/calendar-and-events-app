@@ -220,7 +220,7 @@ import EventForm from '@/components/EventForm';
 import TaskForm from '@/components/TaskForm';
 import ReminderForm from '@/components/ReminderForm';
 import ChangeProfile from '@/components/ChangeProfile';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
     name: 'NavBar',
     components: { EventForm, TaskForm, ReminderForm, ChangeProfile },
@@ -261,6 +261,7 @@ export default {
     },
     methods: {
         ...mapActions(['getUserDetails', 'getAllUsers']),
+        ...mapMutations(['setIsLoading']),
         //method to open and close the menu
         menu() {
             this.drawer = !this.drawer;
@@ -268,11 +269,11 @@ export default {
 
         //method to sign out from the app
         signOut() {
-            this.spinner = this.$loading.show(this.$spinner);
+           this.setIsLoading(true)
             setTimeout(() => {
                 localStorage.clear();
                 this.$router.replace('/auth');
-                this.spinner.hide();
+                this.setIsLoading(false)
             }, 1000);
         },
         // this method will emit one method which will refresh the calendar page
