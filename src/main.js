@@ -4,7 +4,6 @@ import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 import Axios from 'axios';
-import 'vue-loading-overlay/dist/vue-loading.css';
 import dateFilter from '@/filters/date';
 import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
