@@ -43,6 +43,7 @@
 
 <script>
 import { deleteEvent } from '@/services/event.services';
+import { mapMutations } from 'vuex';
 export default {
     name: 'DeleteEvent',
     props: ['event'],
@@ -52,8 +53,9 @@ export default {
         };
     },
     methods: {
+        ...mapMutations(['setIsLoading']),
         async deleteEvent() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             const eventId = this.event._id;
             const response = await deleteEvent(eventId);
             if (response.success) {
@@ -65,7 +67,7 @@ export default {
             }
             this.dialog = false;
             this.$emit('refreshEvent');
-            this.spinner.hide();
+            this.setIsLoading(false)
         },
     },
 };

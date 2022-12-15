@@ -112,7 +112,7 @@
 
 <script>
 import { uploadProfile } from '@/services/profile.services';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
     name: 'ChangeProfile',
     data() {
@@ -126,6 +126,7 @@ export default {
     },
     computed: {
         ...mapGetters(['userDetails']),
+        
         userInfo() {
             if (this.userDetails) return this.userDetails;
             return '';
@@ -133,12 +134,13 @@ export default {
     },
     methods: {
         ...mapActions(['getUserDetails']),
+        ...mapMutations(['setIsLoading']),
         uploadImage(event) {
             this.file = event;
             console.log(event);
         },
         async submit() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             const response = await uploadProfile(this.file);
             if (response.success) {
                 this.$toast.success('Profile picture changes Successfully');
@@ -149,7 +151,7 @@ export default {
             }
 
             this.changeDialog = false;
-            this.spinner.hide();
+            this.setIsLoading(false)
         },
     },
 };

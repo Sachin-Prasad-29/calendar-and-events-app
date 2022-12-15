@@ -194,7 +194,7 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
     name: 'EventForm',
@@ -233,9 +233,10 @@ export default {
     },
     methods: {
         ...mapActions(['getAllEvents']),
+        ...mapMutations(['setIsLoading']),
         async submit() {
             if (this.$refs.form.validate()) {
-                this.spinner = this.$loading.show(this.$spinner);
+                this.setIsLoading(true)
                 const eventDetails = {
                     name: this.title,
                     startDate: this.startDate,
@@ -271,7 +272,7 @@ export default {
                 await this.getAllEvents();
                 this.$emit('refreshCalendar');
                 this.$refs.form.reset();
-                this.spinner.hide();
+                this.setIsLoading(false)
             }
         },
         reset() {

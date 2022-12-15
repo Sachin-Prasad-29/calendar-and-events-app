@@ -112,6 +112,7 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
+import { mapMutations } from 'vuex';
 
 export default {
     name: 'TaskForm',
@@ -136,9 +137,10 @@ export default {
         };
     },
     methods: {
+        ...mapMutations(['setIsLoading']),
         async submit() {
             if (this.$refs.form.validate()) {
-                this.spinner = this.$loading.show(this.$spinner);
+                this.setIsLoading(true)
                 const eventDetails = {
                     name: this.title,
                     startDate: this.startDate,
@@ -166,7 +168,7 @@ export default {
                 }
                 this.$emit('refreshCalendar');
                 this.$refs.form.reset();
-                this.spinner.hide();
+               this.setIsLoading(false)
             }
         },
         reset() {

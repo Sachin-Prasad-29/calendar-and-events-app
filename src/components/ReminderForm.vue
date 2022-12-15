@@ -93,6 +93,7 @@
 
 <script>
 import { addEvent } from '@/services/event.services';
+import { mapMutations } from 'vuex';
 export default {
     name: 'ReminderForm',
     props: ['icon', 'name'],
@@ -114,9 +115,10 @@ export default {
         };
     },
     methods: {
+        ...mapMutations(['setIsLoading']),
         async submit() {
             if (this.$refs.form.validate()) {
-                this.spinner = this.$loading.show(this.$spinner);
+                this.setIsLoading(true)
 
                 const eventDetails = {
                     name: this.title,
@@ -143,7 +145,7 @@ export default {
             }
             this.$emit('refreshCalendar');
             this.$refs.form.reset();
-            this.spinner.hide();
+            this.setIsLoading(false)
         },
         reset() {
             this.$refs.form.reset();

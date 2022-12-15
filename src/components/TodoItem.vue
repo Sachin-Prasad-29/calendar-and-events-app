@@ -73,6 +73,7 @@
 
 <script>
 import { deleteTodo, editTodo } from '@/services/todos.services.js';
+import { mapMutations } from 'vuex';
 export default {
     name: 'TodoItem',
     props: ['todo'],
@@ -82,8 +83,9 @@ export default {
         };
     },
     methods: {
+        ...mapMutations(['setIsLoading']),
         async onDelete() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             const response = await deleteTodo(this.id);
             if (response.success) {
                 this.$toast.success('Item Deleted Successfully !');
@@ -91,10 +93,10 @@ export default {
                 this.$toast.error('Oops! Something error happended');
             }
             this.$emit('loadTodos');
-            this.spinner.hide();
+            this.setIsLoading(true)
         },
         async complete() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             const data = { completed: true };
             const response = await editTodo(this.id, data);
             if (response.success) {
@@ -103,10 +105,10 @@ export default {
                 this.$toast.error('Oops! Something error happended');
             }
             this.$emit('loadTodos');
-            this.spinner.hide();
+            this.setIsLoading(false)
         },
         async unComplete() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             const data = { completed: false };
             const response = await editTodo(this.id, data);
             if (response.success) {
@@ -115,7 +117,7 @@ export default {
                 this.$toast.error('Oops! Something error happended');
             }
             this.$emit('loadTodos');
-            this.spinner.hide();
+            this.setIsLoading(false)
         },
     },
 };

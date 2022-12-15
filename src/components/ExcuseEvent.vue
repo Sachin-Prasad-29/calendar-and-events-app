@@ -43,6 +43,7 @@
 
 <script>
 import {excuseEvent} from '@/services/event.services'
+import { mapMutations } from 'vuex';
 
 export default {
     name: 'ExcuseEvent',
@@ -53,8 +54,9 @@ export default {
         };
     },
     methods: {
+        ...mapMutations(['setIsLoading']),
         async excuseEvent() {
-            this.spinner = this.$loading.show(this.$spinner);
+            this.setIsLoading(true)
             const eventId = this.event._id;
             const eventDetails = this.event;
             const response = await excuseEvent(eventId,eventDetails);
@@ -67,7 +69,7 @@ export default {
             }
             this.dialog = false;
             this.$emit('refreshEvent');
-            this.spinner.hide();
+            this.setIsLoading(false)
         },
     },
 };
