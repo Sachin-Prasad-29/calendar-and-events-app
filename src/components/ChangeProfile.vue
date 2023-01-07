@@ -96,7 +96,7 @@
                                         </v-card>
                                     </v-dialog>
 
-                                    <v-btn rounded text outlined color="error" class="ml-1">
+                                    <v-btn rounded text outlined color="error" class="ml-1" @click="removeProfilePic">
                                         <v-icon>mdi-delete-circle</v-icon>
                                         <span class="text-capitalize ml-1">remove</span>
                                     </v-btn>
@@ -111,8 +111,8 @@
 </template>
 
 <script>
-import { uploadProfile } from '@/services/profile.services';
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { uploadProfile, removeProfile } from '@/services/profile.services'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
     name: 'ChangeProfile',
     data() {
@@ -122,39 +122,51 @@ export default {
             file: null,
 
             rules: [(value) => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!'],
-        };
+        }
     },
     computed: {
         ...mapGetters(['userDetails']),
-        
+
         userInfo() {
-            if (this.userDetails) return this.userDetails;
-            return '';
+            if (this.userDetails) return this.userDetails
+            return ''
         },
     },
     methods: {
         ...mapActions(['getUserDetails']),
         ...mapMutations(['setIsLoading']),
         uploadImage(event) {
-            this.file = event;
-            console.log(event);
+            this.file = event
         },
         async submit() {
             this.setIsLoading(true)
-            const response = await uploadProfile(this.file);
+            const response = await uploadProfile(this.file)
             if (response.success) {
-                this.$toast.success('Profile picture changes Successfully');
-                await this.getUserDetails();
+                this.$toast.success('Profile picture changes Successfully')
+                await this.getUserDetails()
             } else {
-                this.$toast.error('Oops ! Something error happened');
-                console.log(response);
+                this.$toast.error('Oops ! Something error happened')
+                console.log(response)
             }
 
-            this.changeDialog = false;
+            this.changeDialog = false
+            this.setIsLoading(false)
+        },
+        async removeProfilePic() {
+            this.setIsLoading(true)
+            const response = await removeProfile()
+            if (response.success) {
+                this.$toast.success('Profile picture removed Successfully')
+                await this.getUserDetails()
+            } else {
+                this.$$toast.error('Oops ! Something error happened')
+                console.log(response)
+            }
+            this.changeDialog = false
             this.setIsLoading(false)
         },
     },
-};
+}
 </script>
 
 <style></style>

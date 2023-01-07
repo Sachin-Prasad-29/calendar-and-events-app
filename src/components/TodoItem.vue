@@ -1,6 +1,6 @@
 <template>
     <div class="todoItem">
-        <v-card class="mx-auto" max-width="350" elevation="1" outlined >
+        <v-card class="mx-auto" max-width="350" elevation="1" outlined>
             <v-card-actions>
                 <v-row
                     align="center"
@@ -72,55 +72,55 @@
 </template>
 
 <script>
-import { deleteTodo, editTodo } from '@/services/todos.services.js';
-import { mapMutations } from 'vuex';
+import { deleteTodo, editTodo } from '@/services/todos.services.js'
+import { mapMutations } from 'vuex'
 export default {
     name: 'TodoItem',
     props: ['todo'],
     data() {
         return {
             id: this.todo._id,
-        };
+        }
     },
     methods: {
         ...mapMutations(['setIsLoading']),
         async onDelete() {
             this.setIsLoading(true)
-            const response = await deleteTodo(this.id);
+            const response = await deleteTodo(this.id)
             if (response.success) {
-                this.$toast.success('Item Deleted Successfully !');
+                this.$toast.success('Item Deleted Successfully !')
             } else {
-                this.$toast.error('Oops! Something error happended');
+                this.$toast.error('Oops! Something error happended')
             }
-            this.$emit('loadTodos');
+            this.$emit('loadTodos')
             this.setIsLoading(true)
         },
         async complete() {
             this.setIsLoading(true)
-            const data = { completed: true };
-            const response = await editTodo(this.id, data);
+            const data = { completed: true }
+            const response = await editTodo(this.id, data)
             if (response.success) {
-                this.$toast.success('Item marked completed !');
+                this.$toast.success('Item marked completed !')
             } else {
-                this.$toast.error('Oops! Something error happended');
+                this.$toast.error('Oops! Something error happended')
             }
-            this.$emit('loadTodos');
+            this.$emit('loadTodos')
             this.setIsLoading(false)
         },
         async unComplete() {
             this.setIsLoading(true)
-            const data = { completed: false };
-            const response = await editTodo(this.id, data);
+            const data = { completed: false }
+            const response = await editTodo(this.id, data)
             if (response.success) {
-                this.$toast.success('Item marked Uncompleted !');
+                this.$toast.success('Item marked Uncompleted !')
             } else {
-                this.$toast.error('Oops! Something error happended');
+                this.$toast.error('Oops! Something error happended')
             }
-            this.$emit('loadTodos');
+            this.$emit('loadTodos')
             this.setIsLoading(false)
         },
     },
-};
+}
 </script>
 
 <style></style>
