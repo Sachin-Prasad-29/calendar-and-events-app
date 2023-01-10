@@ -136,6 +136,7 @@ export default {
         ...mapActions(['getUserDetails']),
         ...mapMutations(['setIsLoading']),
         uploadImage(event) {
+            console.log(event)
             this.file = event
         },
         async submit() {
